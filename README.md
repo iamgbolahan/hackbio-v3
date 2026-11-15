@@ -1,4 +1,4 @@
-# HACKBIO v3: real backend, crew sign-in, per-astronaut data
+# AstroVital v3: real backend, crew sign-in, per-astronaut data
 
 ```
 backend/    Express + Prisma + Postgres API (also serves the frontend)
@@ -50,3 +50,9 @@ Set `SIM_DEMO_EPISODES=true` in `.env` for more frequent abnormal episodes in a 
 Free Render services sleep after 15 minutes without visits and take about a minute to wake. Change the demo passcodes before any real use.
 
 If you serve the pages from VS Code Live Server (5500) instead, set `apiBaseUrl` in `frontend/js/config.js` to `http://localhost:3000` and add `http://localhost:5500` to `CORS_ORIGINS`; opening via port 3000 is simpler and is what passkeys are set up for.
+
+## Live deployment (Vercel)
+
+The `vercel/` folder is the deployable package (Root Directory = `vercel`). Set these environment variables: `DATABASE_URL` (Postgres, e.g. Neon), `SIM_LAZY=true`, `SIM_ENABLED=false`, `COOKIE_SECURE=true`, `PROTECTED_PAGES_DIR=protected`, `AUTO_SETUP=true` (first request creates tables, demo accounts and history; switch it off afterwards), plus `WEBAUTHN_RP_ID`, `WEBAUTHN_ORIGIN` and `CORS_ORIGINS` for your domain.
+Demo login for judges is pre-filled: crew A01, pairing code `A01-PAIR-7391`. Change all demo passcodes before real use.
+Heart rate and skin temperature thresholds are provisional (ISS-based), not from the proposal.
