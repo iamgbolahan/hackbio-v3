@@ -332,7 +332,7 @@ async function load() {
             return;
         }
 
-        console.error("HACKBIO overview load failed", error);
+        console.error("AstroVital overview load failed", error);
 
         if (error instanceof ApiError) {
             showBanner("connection-banner", "Service problem, the page will retry shortly.", "danger");

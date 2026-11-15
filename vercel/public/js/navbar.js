@@ -2,9 +2,9 @@
             <span class="site-navbar__who">${t} <small>${n.loginId}</small></span>
             <button type="button" class="site-navbar__signout" id="signout-button">Sign out</button>
         </span>`}function renderNavbar(n){n.innerHTML=`
-        <a class="site-navbar__brand" href="${withAstronaut("index.html")}" aria-label="HACKBIO overview">
+        <a class="site-navbar__brand" href="${withAstronaut("index.html")}" aria-label="AstroVital overview">
             <span class="site-navbar__mark" aria-hidden="true"></span>
-            <span class="site-navbar__name">HACKBIO</span>
+            <span class="site-navbar__name">AstroVital</span>
         </a>
 
         <nav class="site-navbar__links" id="site-navbar-links" aria-label="Main navigation">

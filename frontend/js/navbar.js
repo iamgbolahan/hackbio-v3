@@ -52,9 +52,9 @@ function userChip() {
 
 function renderNavbar(host) {
     host.innerHTML = `
-        <a class="site-navbar__brand" href="${withAstronaut("index.html")}" aria-label="HACKBIO overview">
+        <a class="site-navbar__brand" href="${withAstronaut("index.html")}" aria-label="AstroVital overview">
             <span class="site-navbar__mark" aria-hidden="true"></span>
-            <span class="site-navbar__name">HACKBIO</span>
+            <span class="site-navbar__name">AstroVital</span>
         </a>
 
         <nav class="site-navbar__links" id="site-navbar-links" aria-label="Main navigation">

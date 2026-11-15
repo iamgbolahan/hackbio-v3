@@ -155,7 +155,7 @@ function renderIdentity(profile) {
     setText(ui.name, name);
     setText(
         ui.description,
-        profile.identityStatus?.description || "Astronaut profile retrieved from the HACKBIO backend."
+        profile.identityStatus?.description || "Astronaut profile retrieved from the AstroVital backend."
     );
     setText(ui.missionName, mission);
     setText(ui.astronautId, profile.astronautId || getAstronautId());
@@ -245,7 +245,7 @@ function showNoAstronaut() {
 }
 
 function showLoadError(error) {
-    console.error("HACKBIO profile load failed", error);
+    console.error("AstroVital profile load failed", error);
 
     setConnection("error", "Profile service unavailable");
     setText(ui.name, "Profile data unavailable");

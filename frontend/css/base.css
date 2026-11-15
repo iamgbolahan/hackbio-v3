@@ -4,26 +4,28 @@
 ========================================= */
 
 :root {
-    /* Color */
-    --color-primary: #163B40;
-    --color-secondary: #398F89;
-    --color-background: #F2F6F5;
-    --color-surface: #FFFFFF;
-    --color-surface-soft: #E4F1EF;
-    --color-text: #163B40;
-    --color-text-muted: #6B7F80;
-    --color-text-subtle: #899795;
-    --color-border: #E3EBE9;
-    --color-border-soft: #E8EFED;
+    /* Color: deep-space navy with cyan hologram glow (AstroVital) */
+    --color-primary: #D5F7FC;
+    --color-secondary: #2FD3E6;
+    --color-background: #030D1A;
+    --color-surface: #071B2B;
+    --color-surface-soft: #0B2A3C;
+    --color-text: #DDF4F8;
+    --color-text-muted: #8FB5BF;
+    --color-text-subtle: #648B96;
+    --color-border: #12394B;
+    --color-border-soft: #0E2D3E;
 
     /* Status colors */
-    --color-success: #267D5A;
-    --color-success-soft: #E2F5EA;
-    --color-warning: #9A6725;
-    --color-warning-soft: #FFF4DF;
-    --color-danger: #A64242;
-    --color-danger-soft: #FBEAEA;
-    --color-neutral-soft: #EDF1F0;
+    --color-success: #3DDC97;
+    --color-success-soft: rgba(61, 220, 151, 0.14);
+    --color-warning: #F2C14E;
+    --color-warning-soft: rgba(242, 193, 78, 0.15);
+    --color-danger: #FF6B6B;
+    --color-danger-soft: rgba(255, 107, 107, 0.16);
+    --color-neutral-soft: #0D2636;
+    --gradient-page: radial-gradient(ellipse 90% 60% at 50% -10%, #0B4A5A 0%, rgba(4, 34, 52, 0.85) 38%, #030D1A 75%);
+    --gradient-accent: linear-gradient(135deg, #2FD3E6 0%, #0E8FA8 100%);
 
     /* Typography */
     --font-sans: "Inter", Arial, sans-serif;
@@ -32,7 +34,7 @@
     --radius-card: 1rem;
     --radius-control: 0.625rem;
     --radius-pill: 2rem;
-    --shadow-card: 0 0.5rem 1.8rem rgba(22, 59, 64, 0.055);
+    --shadow-card: 0 0.5rem 1.8rem rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(47, 211, 230, 0.06);
 
     /* Layout (scaled by the media queries below) */
     --navbar-height: 5rem;
@@ -117,3 +119,10 @@ button:focus-visible {
     margin-inline: auto;
     padding-inline: var(--page-gutter);
 }
+
+
+/* Page backdrop: the navy-to-teal glow from the AstroVital film */
+html { background-color: #030D1A; color-scheme: dark; }
+body { background: var(--gradient-page) fixed, #030D1A; color: var(--color-text); min-height: 100vh; }
+.card { background: linear-gradient(180deg, rgba(11, 42, 60, 0.72), rgba(7, 27, 43, 0.92)); border-color: var(--color-border); backdrop-filter: blur(6px); }
+input, select, textarea { background: #061726; color: var(--color-text); border-color: var(--color-border); }

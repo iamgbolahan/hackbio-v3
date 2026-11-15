@@ -96,7 +96,7 @@ async function load() {
             return;
         }
 
-        console.error("HACKBIO connection load failed", error);
+        console.error("AstroVital connection load failed", error);
 
         if (error instanceof ApiError) {
             showBanner("connection-banner", "Service problem, the page will retry shortly.", "danger");

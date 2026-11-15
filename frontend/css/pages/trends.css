@@ -8,11 +8,11 @@
 
 /* Page-only colors that are not shared design tokens. */
 .trends-main {
-    --chart-bar: #75B7AD;
-    --chart-label: #9AA8A5;
-    --panel-bg: #EAF4F2;
-    --panel-border: #DCECE8;
-    --panel-icon-bg: #D4EAE5;
+    --chart-bar: #2FD3E6;
+    --chart-label: #86AEB9;
+    --panel-bg: #0B2A3C;
+    --panel-border: #12394B;
+    --panel-icon-bg: #0F3A4D;
 }
 
 
@@ -79,7 +79,7 @@
 .period-button.active {
     background: var(--color-surface);
     color: var(--color-primary);
-    box-shadow: 0 0.1rem 0.4rem rgba(22, 59, 64, 0.08);
+    box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 0.4);
 }
 
 
@@ -100,7 +100,7 @@
 .metric-card {
     min-width: 0;
     padding: 1.5rem;
-    box-shadow: 0 0.25rem 1.2rem rgba(22, 59, 64, 0.035);
+    box-shadow: 0 0.25rem 1.2rem rgba(0, 0, 0, 0.3);
 }
 
 .metric-card-header {
@@ -279,7 +279,7 @@
 }
 
 .interpretation-details strong {
-    color: #315D58;
+    color: #9FD9E2;
 }
 
 

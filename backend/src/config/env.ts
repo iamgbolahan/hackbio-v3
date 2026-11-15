@@ -42,14 +42,14 @@ const envSchema = z.object({
   CONNECTED_WITHIN_MIN: z.coerce.number().int().positive().default(15),
 
   // Sign-in and sessions.
-  SESSION_TTL_HOURS: z.coerce.number().positive().default(12),
-  SESSION_IDLE_MIN: z.coerce.number().positive().default(30),
+  SESSION_TTL_HOURS: z.coerce.number().positive().default(2),
+  SESSION_IDLE_MIN: z.coerce.number().positive().default(15),
   LOCKOUT_ATTEMPTS: z.coerce.number().int().positive().default(5),
   LOCKOUT_MIN: z.coerce.number().positive().default(15),
   COOKIE_SECURE: flag(false),
   // WebAuthn (fingerprint / face / security key). The origin must match the address in the browser.
   WEBAUTHN_RP_ID: z.string().default("localhost"),
-  WEBAUTHN_RP_NAME: z.string().default("HACKBIO Mission Health"),
+  WEBAUTHN_RP_NAME: z.string().default("AstroVital"),
   WEBAUTHN_ORIGIN: z.string().default("http://localhost:3000"),
   // Shared secret a real Bio-Monitor gateway sends as X-Device-Key when posting readings.
   DEVICE_API_KEY: z.string().optional(),
@@ -63,6 +63,8 @@ const envSchema = z.object({
   BACKFILL_ON_START: flag(false),
   // Serverless hosts with no shell: run migrate + seed + history once on the first request, then switch this off.
   AUTO_SETUP: flag(false),
+  // Folder holding the four app pages when they are kept out of the public folder (Vercel). Falls back to FRONTEND_DIR.
+  PROTECTED_PAGES_DIR: z.string().optional(),
   SIM_MAX_BACKFILL_HOURS: z.coerce.number().positive().default(336),
   // Enables the one-time /api/setup/* endpoints (migrate, seed, history). Leave unset to switch them off.
   SETUP_TOKEN: z.string().min(16).optional(),

@@ -225,7 +225,7 @@ async function updateDashboard(period, silent = false) {
             return;
         }
 
-        console.error("HACKBIO trends load failed", error);
+        console.error("AstroVital trends load failed", error);
 
         const message = error instanceof ApiError
             ? "Service problem, please try again."

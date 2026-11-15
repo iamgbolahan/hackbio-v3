@@ -101,6 +101,6 @@
 .monitor-form { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 .monitor-form[hidden], .monitor-button[hidden], .monitor-error[hidden] { display: none; }
 .monitor-form input { flex: 1 1 14rem; font: inherit; padding: 0.65rem 0.8rem; border: 1px solid var(--color-border); border-radius: var(--radius-control); }
-.monitor-button { font: inherit; font-weight: 700; padding: 0.65rem 1.1rem; border: 0; border-radius: var(--radius-control); background: var(--color-primary); color: #fff; cursor: pointer; justify-self: start; }
+.monitor-button { font: inherit; font-weight: 700; padding: 0.65rem 1.1rem; border: 0; border-radius: var(--radius-control); background: var(--gradient-accent); color: #03131F; cursor: pointer; justify-self: start; }
 .monitor-button--ghost { background: var(--color-surface-soft); color: var(--color-primary); }
 .monitor-error { margin: 0; padding: 0.6rem 0.8rem; border-radius: var(--radius-control); background: var(--color-danger-soft); color: var(--color-danger); font-size: 0.88rem; }

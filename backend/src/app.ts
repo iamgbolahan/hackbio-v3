@@ -1,4 +1,5 @@
-import { resolve } from "node:path";
+import { existsSync } from "node:fs";
+import { join, resolve } from "node:path";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
@@ -14,6 +15,7 @@ import {
   requireAuth,
   requireRole,
 } from "./modules/auth/auth.middleware";
+import { SESSION_COOKIE } from "./modules/auth/auth.middleware";
 import { authRouter } from "./modules/auth/controllers/auth.controller";
 import { readingsRouter } from "./modules/ingest/controllers/readings.controller";
 import { ultrasoundRouter } from "./modules/ingest/controllers/ultrasound.controller";
@@ -96,6 +98,37 @@ export function createApp(services: Services = createServices()): express.Expres
   app.use("/api", astronautsRouter(services));
 
   app.use("/api", notFoundRoute);
+
+  // The four app pages are only ever sent to a signed-in visitor. Anyone else who opens a page address directly
+  // (for example a link to index.html) is redirected to the sign-in page, so nothing depends on the browser script.
+  const pagesDir = [env.PROTECTED_PAGES_DIR, env.FRONTEND_DIR]
+    .filter((dir): dir is string => Boolean(dir))
+    .flatMap((dir) => [resolve(process.cwd(), dir), resolve(__dirname, "..", dir), resolve(__dirname, dir)])
+    .find((dir) => existsSync(join(dir, "index.html")));
+  if (pagesDir) {
+    const pages = ["index", "health-trends", "profile", "connection"];
+    app.get(
+      pages.flatMap((page) => [`/${page}.html`, `/${page}`]).concat("/app"),
+      async (req, res, next) => {
+        try {
+          const token = req.cookies?.[SESSION_COOKIE] as string | undefined;
+          const principal = token ? await services.auth.resolve(token).catch(() => null) : null;
+          if (!principal) {
+            const target = req.path === "/app" ? "index.html" : `${req.path.replace(/^\//, "").replace(/\.html$/, "")}.html`;
+            res.set("Cache-Control", "no-store");
+            res.redirect(302, `/login.html?next=${encodeURIComponent(target + (req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : ""))}`);
+            return;
+          }
+          const name = req.path === "/app" ? "index" : req.path.replace(/^\//, "").replace(/\.html$/, "");
+          res.set("Cache-Control", "no-store");
+          res.sendFile(join(pagesDir, `${name}.html`));
+        } catch (error) {
+          next(error);
+        }
+      },
+    );
+  }
+
   if (env.FRONTEND_DIR) {
     app.use(express.static(resolve(process.cwd(), env.FRONTEND_DIR), { index: "login.html" }));
   }
