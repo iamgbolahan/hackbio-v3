@@ -8,6 +8,8 @@ const NUMBER_COLUMNS = new Set([
   "sbp_mmhg",
   "dbp_mmhg",
   "glucose_mgdl",
+  "hr_bpm",
+  "skin_temp_c",
   "mission_day",
   "duration_min",
   "n_bp_readings",

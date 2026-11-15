@@ -12,6 +12,8 @@ const LABELS: Record<EvaluatedParameter, { name: string; unit: string }> = {
   sbp_mmhg: { name: "Systolic blood pressure", unit: "mmHg" },
   dbp_mmhg: { name: "Diastolic blood pressure", unit: "mmHg" },
   glucose_mgdl: { name: "Blood glucose", unit: "mg/dL" },
+  hr_bpm: { name: "Heart rate", unit: "bpm" },
+  skin_temp_c: { name: "Skin temperature", unit: "°C" },
 };
 
 function describeReading(parameter: EvaluatedParameter, value: number): string {

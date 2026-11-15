@@ -38,8 +38,8 @@ export interface OverviewReadings {
   oxygenSaturation: OrUnavailable<SingleReadingView>;
   bloodPressure: OrUnavailable<BloodPressureReadingView>;
   bloodGlucose: OrUnavailable<GlucoseReadingView>;
-  heartRate: typeof unavailable;
-  skinTemperature: typeof unavailable;
+  heartRate: OrUnavailable<SingleReadingView>;
+  skinTemperature: OrUnavailable<SingleReadingView>;
 }
 
 export interface OverviewResponse {

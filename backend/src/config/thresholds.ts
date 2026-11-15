@@ -7,6 +7,8 @@ export type ThresholdParameter =
   | "spo2_pct"
   | "sbp_mmhg"
   | "glucose_mgdl"
+  | "hr_bpm"
+  | "skin_temp_c"
   | "sbp_mmhg_resting"
   | "dbp_mmhg_resting"
   | "ijv_flow_grade"
@@ -112,6 +114,20 @@ export const THRESHOLDS: readonly ThresholdRow[] = [
     roundToInteger: true,
   }),
   row("glucose_mgdl", "any_time", "ATTENTION", [200, null], atLeastInt),
+
+  // Heart rate and skin temperature are not in the proposal: provisional bands from published ISS data
+  // (resting in-flight heart rate equals pre-flight supine; core temperature rises about 1 C in flight).
+  row("hr_bpm", "any", "NORMAL", [50, 99], closedInt),
+  row("hr_bpm", "any", "WATCH", [100, 179], { ...closedInt, explainedByActivity: true }),
+  row("hr_bpm", "any", "WATCH", [40, 49], closedInt),
+  row("hr_bpm", "any", "ATTENTION", [null, 39], atMostInt),
+  row("hr_bpm", "any", "ATTENTION", [180, null], atLeastInt),
+
+  row("skin_temp_c", "any", "NORMAL", [32.0, 36.6], { lowInclusive: true, highInclusive: false }),
+  row("skin_temp_c", "any", "WATCH", [36.6, 37.5], { lowInclusive: true, highInclusive: false, explainedByActivity: true }),
+  row("skin_temp_c", "any", "WATCH", [30.5, 32.0], { lowInclusive: true, highInclusive: false }),
+  row("skin_temp_c", "any", "ATTENTION", [null, 30.5], { lowInclusive: false, highInclusive: false }),
+  row("skin_temp_c", "any", "ATTENTION", [37.5, null], { lowInclusive: true, highInclusive: false }),
 
   // B. Resting blood pressure, judged on resting measurements and daily averages.
   row("sbp_mmhg_resting", "any", "NORMAL", [90, 119], closedInt),

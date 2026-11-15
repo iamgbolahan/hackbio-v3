@@ -7,7 +7,7 @@ import type {
 
 // Parameters checked against the threshold table on every reading.
 export type AcuteParameter =
-  "resp_rate_bpm" | "spo2_pct" | "sbp_mmhg" | "glucose_mgdl";
+  "resp_rate_bpm" | "spo2_pct" | "sbp_mmhg" | "glucose_mgdl" | "hr_bpm" | "skin_temp_c";
 
 // Everything the real-time engine evaluates: acute parameters plus DBP, which only has a baseline layer.
 export type EvaluatedParameter = AcuteParameter | "dbp_mmhg";
@@ -21,6 +21,8 @@ export interface EvaluableReading {
   sbpMmhg: number | null;
   dbpMmhg: number | null;
   glucoseMgdl: number | null;
+  hrBpm?: number | null;
+  skinTempC?: number | null;
   fasting: boolean | null;
 }
 

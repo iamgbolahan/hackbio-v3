@@ -11,6 +11,8 @@ export interface StreamResponse {
     systolic: number | null;
     diastolic: number | null;
     bloodGlucose: number | null;
+    heartRate: number | null;
+    skinTemperature: number | null;
     activityLevel: string;
     signalQuality: string;
     status: string;
@@ -43,6 +45,8 @@ export class StreamService {
         systolic: row.sbpMmhg,
         diastolic: row.dbpMmhg,
         bloodGlucose: row.glucoseMgdl,
+        heartRate: row.hrBpm,
+        skinTemperature: row.skinTempC,
         activityLevel: row.activityLevel,
         signalQuality: row.signalQuality,
         status: row.status ?? "IGNORED",

@@ -33,6 +33,8 @@ const VALUE_OF: Record<
   sbp_mmhg: (r) => r.sbpMmhg,
   dbp_mmhg: (r) => r.dbpMmhg,
   glucose_mgdl: (r) => r.glucoseMgdl,
+  hr_bpm: (r) => r.hrBpm ?? null,
+  skin_temp_c: (r) => r.skinTempC ?? null,
 };
 
 function minutesBetween(since: string, now: Date): number {
@@ -167,7 +169,12 @@ export class ReadingEvaluator {
   ): BaselineDeviation | null {
     const { reading, previous, baselines } = context;
     // Baselines are resting values, and glucose has no session baseline.
-    if (parameter === "glucose_mgdl" || reading.activityLevel !== "low")
+    if (
+      parameter === "glucose_mgdl" ||
+      parameter === "hr_bpm" ||
+      parameter === "skin_temp_c" ||
+      reading.activityLevel !== "low"
+    )
       return null;
     const reference = selectBaselineReference(
       baselines,

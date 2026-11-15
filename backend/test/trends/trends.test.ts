@@ -36,8 +36,8 @@ describe("GET /api/trends/:astronautId", () => {
       missionDay: 24,
     });
     expect(res.body.metrics.bloodPressure.days).toHaveLength(7);
-    expect(res.body.metrics.heartRate).toEqual({ status: "unavailable" });
-    expect(res.body.metrics.skinTemperature).toEqual({ status: "unavailable" });
+    expect(res.body.metrics.heartRate.status).toBe("available");
+    expect(res.body.metrics.skinTemperature.status).toBe("available");
   });
 
   it("returns 30 days for the 30-day view", async () => {

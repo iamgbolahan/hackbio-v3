@@ -23,6 +23,8 @@ export const readingRecordSchema = z
     sbp_mmhg: measurement,
     dbp_mmhg: measurement,
     glucose_mgdl: measurement,
+    hr_bpm: measurement,
+    skin_temp_c: measurement,
     fasting: z
       .boolean()
       .nullish()
@@ -46,6 +48,8 @@ export const readingRecordSchema = z
         r.sbp_mmhg,
         r.dbp_mmhg,
         r.glucose_mgdl,
+        r.hr_bpm,
+        r.skin_temp_c,
       ].some((value) => value !== null),
     {
       message: "at least one measurement is required",
@@ -64,6 +68,8 @@ export const readingRecordSchema = z
     sbpMmhg: r.sbp_mmhg,
     dbpMmhg: r.dbp_mmhg,
     glucoseMgdl: r.glucose_mgdl,
+    hrBpm: r.hr_bpm,
+    skinTempC: r.skin_temp_c,
     fasting: r.fasting,
     signalQuality: r.signal_quality,
     missionDay: r.mission_day,

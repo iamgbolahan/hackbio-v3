@@ -26,7 +26,9 @@ export class DailyAveragesService {
         ('spo2_pct', r."spo2Pct"),
         ('sbp_mmhg', r."sbpMmhg"),
         ('dbp_mmhg', r."dbpMmhg"),
-        ('glucose_mgdl', r."glucoseMgdl")
+        ('glucose_mgdl', r."glucoseMgdl"),
+        ('hr_bpm', r."hrBpm"),
+        ('skin_temp_c', r."skinTempC")
       ) AS p(parameter, value)
       WHERE r."astronautId" = ${astronautId}
         AND r."signalQuality" <> 'ARTIFACT'

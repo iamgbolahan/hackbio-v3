@@ -69,8 +69,8 @@ export class TrendsService {
       period,
       asOf: asOf ? isoDate(asOf) : null,
       metrics: {
-        heartRate: unavailable,
-        skinTemperature: unavailable,
+        heartRate: this.singleValueTrend("heartRate", rows),
+        skinTemperature: this.singleValueTrend("skinTemperature", rows),
         respiratoryRate: this.singleValueTrend("respiratoryRate", rows),
         oxygenSaturation: this.singleValueTrend("oxygenSaturation", rows),
         bloodGlucose: this.singleValueTrend("bloodGlucose", rows),

@@ -3,7 +3,7 @@ import type { ReadingRecord } from "../dto/reading.dto";
 
 // Physically implausible values, suggested by the mock pack (not the proposal); such records are stored as ARTIFACT.
 const PLAUSIBLE: Record<
-  "respRateBpm" | "spo2Pct" | "sbpMmhg" | "dbpMmhg" | "glucoseMgdl",
+  "respRateBpm" | "spo2Pct" | "sbpMmhg" | "dbpMmhg" | "glucoseMgdl" | "hrBpm" | "skinTempC",
   [number, number]
 > = {
   respRateBpm: [4, 60],
@@ -11,6 +11,8 @@ const PLAUSIBLE: Record<
   sbpMmhg: [50, 260],
   dbpMmhg: [20, 160],
   glucoseMgdl: [20, 600],
+  hrBpm: [20, 250],
+  skinTempC: [20, 42],
 };
 
 export function resolveSignalQuality(record: ReadingRecord): SignalQuality {

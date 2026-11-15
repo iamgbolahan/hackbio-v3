@@ -49,8 +49,8 @@ async function loadTrends(period) {
         day => day.systolic,
         (day, unit) => `${day.systolic}/${day.diastolic} ${unit} · ${day.status}`
     );
-    HEALTH_DATA.heartRate = null;      // not measured by this system
-    HEALTH_DATA.skinTemperature = null;
+    HEALTH_DATA.heartRate = toMetric(m.heartRate);
+    HEALTH_DATA.skinTemperature = toMetric(m.skinTemperature);
 
     return data;
 }

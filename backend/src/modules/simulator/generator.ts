@@ -8,6 +8,14 @@ export interface SimBaseline {
   spo2: number;
   sbp: number;
   dbp: number;
+  hr: number;
+  sk: number;
+}
+
+// Reference heart rate and skin temperature for an astronaut (no baseline session exists for them).
+export function vitalReference(astronautId: string): { hr: number; sk: number } {
+  const seed = seedFor(astronautId);
+  return { hr: 60 + (seed % 90) / 10, sk: 33.9 + (seed % 7) / 10 };
 }
 
 export interface SimSample {
@@ -16,6 +24,8 @@ export interface SimSample {
   sbpMmhg: number;
   dbpMmhg: number;
   glucoseMgdl: number;
+  hrBpm: number;
+  skinTempC: number;
   fasting: boolean;
   activityLevel: "low" | "moderate" | "high";
   signalQuality: "OK" | "LOW";
@@ -153,6 +163,10 @@ export function sample(
     if (since > 0) glucose += (since / 0.75) * 38 * Math.exp(1 - since / 0.75);
   }
 
+  // Heart rate follows activity and sleep; skin temperature runs a little warm in flight and rises with exertion.
+  let hr = base.hr + [0, 24, 68][activity]! - 9 * asleep + noise(seed, 6, t, 1.2) + disparity(seed, 6, t, 14);
+  let skin = base.sk + 0.4 * flight + [0, 0.3, 0.8][activity]! - 0.5 * asleep + noise(seed, 7, t, 0.08) + disparity(seed, 7, t, 0.9);
+
   let tag: string | null = null;
   if (episode) {
     const w = episode.strength;
@@ -160,6 +174,8 @@ export function sample(
     if (episode.kind === "spo2_drop") spo2 += (90.2 - spo2) * w;
     if (episode.kind === "rr_high") rr += (22.3 - rr) * w;
     if (episode.kind === "bp_low") sbp += (97 - sbp) * w;
+    if (episode.kind === "spo2_drop") hr += 8 * w;
+    if (episode.kind === "rr_high") hr += 7 * w;
     tag = `sim_${episode.kind}`;
   }
 
@@ -179,6 +195,8 @@ export function sample(
     sbpMmhg: Math.round(sbp),
     dbpMmhg: Math.round(dbp),
     glucoseMgdl: Math.round(glucose),
+    hrBpm: Math.round(hr),
+    skinTempC: Math.round(skin * 10) / 10,
     fasting: hour >= 2.5 && hour < 7.5,
     activityLevel: (["low", "moderate", "high"] as const)[activity],
     signalQuality: lowQuality ? "LOW" : "OK",

@@ -33,6 +33,8 @@ const envSchema = z.object({
   PERSISTENCE_SPO2_MIN: optionalMinutes,
   PERSISTENCE_SBP_MIN: optionalMinutes,
   PERSISTENCE_GLUCOSE_MIN: optionalMinutes,
+  PERSISTENCE_HR_MIN: optionalMinutes,
+  PERSISTENCE_SKIN_MIN: optionalMinutes,
   BASELINE_Z_LIMIT: z
     .string()
     .optional()

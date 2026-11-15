@@ -9,11 +9,11 @@ export type MetricKey =
   | "oxygenSaturation"
   | "bloodGlucose";
 
-// Shown on the screens but not measured: the proposal's parameter list and the mock data leave them out.
-export type UnavailableMetricKey = "heartRate" | "skinTemperature";
+// Every metric is measured now; kept for the profile screen, which has no heart rate or skin temperature baseline.
+export type UnavailableMetricKey = never;
 
 export type SingleValueMetricKey =
-  "respiratoryRate" | "oxygenSaturation" | "bloodGlucose";
+  "respiratoryRate" | "oxygenSaturation" | "bloodGlucose" | "heartRate" | "skinTemperature";
 
 export const SINGLE_VALUE_METRICS: Record<
   SingleValueMetricKey,
@@ -22,6 +22,8 @@ export const SINGLE_VALUE_METRICS: Record<
   respiratoryRate: { parameter: "resp_rate_bpm", unit: "breaths/min" },
   oxygenSaturation: { parameter: "spo2_pct", unit: "%" },
   bloodGlucose: { parameter: "glucose_mgdl", unit: "mg/dL" },
+  heartRate: { parameter: "hr_bpm", unit: "bpm" },
+  skinTemperature: { parameter: "skin_temp_c", unit: "°C" },
 };
 
 // Axis range the frontend scales its bars against (values from its demo data where it had one).
@@ -33,6 +35,8 @@ export const CHART_RANGE: Record<
   oxygenSaturation: { min: 90, max: 100 },
   bloodPressure: { min: 80, max: 150 },
   bloodGlucose: { min: 60, max: 160 },
+  heartRate: { min: 40, max: 120 },
+  skinTemperature: { min: 32, max: 38 },
 };
 
 export const unavailable = { status: "unavailable" } as const;

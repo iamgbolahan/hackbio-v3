@@ -15,6 +15,8 @@ export const statusEngineConfig: StatusEngineConfig = {
     spo2_pct: env.PERSISTENCE_SPO2_MIN,
     sbp_mmhg: env.PERSISTENCE_SBP_MIN,
     glucose_mgdl: env.PERSISTENCE_GLUCOSE_MIN,
+    hr_bpm: env.PERSISTENCE_HR_MIN,
+    skin_temp_c: env.PERSISTENCE_SKIN_MIN,
   },
   baselineZLimit: env.BASELINE_Z_LIMIT,
   gapMinutes: env.GAP_MINUTES,

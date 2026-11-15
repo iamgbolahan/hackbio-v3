@@ -20,6 +20,7 @@ import type {
   OverviewResponse,
   SingleReadingView,
 } from "../dto/overview.dto";
+import { vitalReference } from "../../simulator/generator";
 import type { MonitoringSessionService } from "./monitoring-session.service";
 
 const ADVICE: Record<HealthStatus, string> = {
@@ -74,6 +75,25 @@ function singleReading(
   };
 }
 
+// Heart rate and skin temperature have no pre-flight baseline session; they are compared with a per-astronaut
+// reference value that the simulator also uses.
+function vitalReading(
+  context: ReadingContext,
+  parameter: "hr_bpm" | "skin_temp_c",
+  unit: string,
+  reference: number,
+): SingleReadingView | typeof unavailable {
+  const evaluation = context.parameters[parameter];
+  if (!evaluation) return unavailable;
+  return {
+    value: evaluation.value,
+    unit,
+    baseline: reference,
+    deviationPct: Number((((evaluation.value - reference) / reference) * 100).toFixed(2)),
+    status: evaluation.status,
+  };
+}
+
 function buildReadings(
   latest: Reading,
   stats: readonly BaselineStatSummary[],
@@ -117,8 +137,8 @@ function buildReadings(
           status: glucose.status,
         }
       : unavailable,
-    heartRate: unavailable,
-    skinTemperature: unavailable,
+    heartRate: vitalReading(context, "hr_bpm", "bpm", round1(vitalReference(latest.astronautId).hr)),
+    skinTemperature: vitalReading(context, "skin_temp_c", "°C", round1(vitalReference(latest.astronautId).sk)),
   };
 }
 

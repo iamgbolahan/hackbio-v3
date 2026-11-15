@@ -233,11 +233,13 @@ const SPARK_SERIES = {
     respiratoryRate: r => r.respiratoryRate,
     oxygenSaturation: r => r.oxygenSaturation,
     bloodPressure: r => r.systolic,
-    bloodGlucose: r => r.bloodGlucose
+    bloodGlucose: r => r.bloodGlucose,
+    heartRate: r => r.heartRate,
+    skinTemperature: r => r.skinTemperature
 };
 
 /* Smallest vertical range per metric, so whole-number readings do not look like wild swings. */
-const SPARK_MIN_SPAN = { respiratoryRate: 8, oxygenSaturation: 8, bloodPressure: 24, bloodGlucose: 30 };
+const SPARK_MIN_SPAN = { respiratoryRate: 8, oxygenSaturation: 8, bloodPressure: 24, bloodGlucose: 30, heartRate: 20, skinTemperature: 1 };
 
 function sparkline(values, minSpan) {
     const mid = (Math.min(...values) + Math.max(...values)) / 2;
@@ -289,10 +291,12 @@ function renderStreamTable(readings) {
 
         row.append(
             cellOf(new Date(r.timestamp).toLocaleTimeString()),
+            cellOf(`${r.heartRate} bpm`),
             cellOf(`${r.respiratoryRate} /min`),
             cellOf(`${r.oxygenSaturation}%`),
             cellOf(`${r.systolic}/${r.diastolic} mmHg`),
             cellOf(`${r.bloodGlucose} mg/dL`),
+            cellOf(`${r.skinTemperature} °C`),
             cellOf(r.activityLevel),
             statusCell
         );

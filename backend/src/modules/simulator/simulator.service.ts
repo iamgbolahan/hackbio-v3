@@ -4,7 +4,7 @@ import type { BaselineStatsService } from "../baselines/services/baseline-stats.
 import type { ReadingRecord } from "../ingest/dto/reading.dto";
 import type { ReadingIngestService } from "../ingest/services/reading-ingest.service";
 import { missionDayFor } from "../auth/services/monitor-verification.service";
-import { inDropout, sample, seedFor, type SimBaseline } from "./generator";
+import { inDropout, sample, seedFor, vitalReference, type SimBaseline } from "./generator";
 
 const STEP_MS = env.SIM_INTERVAL_SEC * 1000;
 const COARSE_MS = 5 * 60_000;
@@ -166,6 +166,8 @@ export class SimulatorService {
       sbpMmhg: s.sbpMmhg,
       dbpMmhg: s.dbpMmhg,
       glucoseMgdl: s.glucoseMgdl,
+      hrBpm: s.hrBpm,
+      skinTempC: s.skinTempC,
       fasting: s.fasting,
       signalQuality: s.signalQuality,
       missionDay,
@@ -183,6 +185,7 @@ export class SimulatorService {
     const dbp = mean("dbp_mmhg");
     if (rr === undefined || spo2 === undefined || sbp === undefined || dbp === undefined)
       return null;
-    return { rr, spo2, sbp, dbp };
+    const vitals = vitalReference(astronautId);
+    return { rr, spo2, sbp, dbp, hr: vitals.hr, sk: vitals.sk };
   }
 }

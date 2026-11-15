@@ -65,6 +65,8 @@ enum StreamParameter {
   sbp_mmhg
   dbp_mmhg
   glucose_mgdl
+  hr_bpm
+  skin_temp_c
 }
 
 model Astronaut {
@@ -103,6 +105,8 @@ model Reading {
   sbpMmhg       Float?
   dbpMmhg       Float?
   glucoseMgdl   Float?
+  hrBpm         Float?
+  skinTempC     Float?
   fasting       Boolean?
   signalQuality SignalQuality
   missionDay    Int?

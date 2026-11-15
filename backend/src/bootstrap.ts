@@ -14,6 +14,11 @@ const MARKS: Record<string, string> = {
   "20261115120000_auth": "users",
 };
 
+// A migration that only adds a column is recognised by that column.
+const COLUMN_MARKS: Record<string, [string, string]> = {
+  "20261115170000_vitals": ["readings", "hrBpm"],
+};
+
 async function migrate(): Promise<void> {
   const url = new URL(env.DATABASE_URL);
   url.searchParams.delete("channel_binding");
@@ -21,9 +26,16 @@ async function migrate(): Promise<void> {
   try {
     for (const migration of MIGRATIONS) {
       const mark = MARKS[migration.name];
-      const exists =
-        mark &&
-        (await pool.query("select to_regclass($1) as t", [`public.${mark}`])).rows[0].t !== null;
+      const column = COLUMN_MARKS[migration.name];
+      const exists = column
+        ? (
+            await pool.query(
+              "select 1 from information_schema.columns where table_name = $1 and column_name = $2",
+              column,
+            )
+          ).rowCount! > 0
+        : mark &&
+          (await pool.query("select to_regclass($1) as t", [`public.${mark}`])).rows[0].t !== null;
       if (exists) continue;
       await pool.query(migration.sql);
       console.log(`bootstrap: applied migration ${migration.name}`);

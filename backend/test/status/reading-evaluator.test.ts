@@ -15,6 +15,8 @@ const config: StatusEngineConfig = {
     spo2_pct: 30,
     sbp_mmhg: 60,
     glucose_mgdl: null,
+    hr_bpm: null,
+    skin_temp_c: null,
   },
   baselineZLimit: 3,
   gapMinutes: 10,
