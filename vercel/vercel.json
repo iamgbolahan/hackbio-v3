@@ -1,0 +1,8 @@
+{
+  "functions": { "api/index.js": { "maxDuration": 300, "includeFiles": "parts/**" } },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index" },
+    { "source": "/health", "destination": "/api/index" },
+    { "source": "/", "destination": "/login.html" }
+  ]
+}
