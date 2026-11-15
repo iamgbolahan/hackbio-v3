@@ -481,3 +481,14 @@
 .stream-table tbody tr:first-child td {
     font-weight: 600;
 }
+
+
+/* Status colours: green = NORMAL, yellow = WATCH, red = ATTENTION */
+.interpretation-content[data-level] { border-left: 0.3125rem solid var(--color-success); padding-left: 1rem; }
+.interpretation-content[data-level="WATCH"] { border-left-color: #E0A526; background: var(--color-warning-soft); border-radius: 0.5rem; }
+.interpretation-content[data-level="ATTENTION"] { border-left-color: var(--color-danger); background: var(--color-danger-soft); border-radius: 0.5rem; }
+.interpretation-content[data-level="NORMAL"] { background: var(--color-success-soft); border-radius: 0.5rem; }
+.interpretation-icon[data-level="NORMAL"] { background-color: var(--color-success); }
+.interpretation-icon[data-level="WATCH"] { background-color: #E0A526; }
+.interpretation-icon[data-level="ATTENTION"] { background-color: var(--color-danger); }
+.interpretation-advice { font-weight: 600; margin-top: 0.5rem; }

@@ -22,6 +22,15 @@ import type {
 } from "../dto/overview.dto";
 import type { MonitoringSessionService } from "./monitoring-session.service";
 
+const ADVICE: Record<HealthStatus, string> = {
+  NORMAL:
+    "Everything is inside its expected range. Carry on with the planned schedule and keep the Bio-Monitor worn snugly.",
+  WATCH:
+    "One value has drifted out of its usual range. Rest for a few minutes, drink some water and check the sensor fit. If it clears, no action is needed; if it stays, tell the flight surgeon.",
+  ATTENTION:
+    "A value is well outside its safe range. Stop the current activity, sit down and breathe slowly, then contact the flight surgeon now and keep the monitor on.",
+};
+
 const HEADLINES: Record<HealthStatus, string> = {
   NORMAL: "No sustained unexplained deviations detected",
   WATCH:
@@ -153,6 +162,7 @@ export class OverviewService {
               headline: HEADLINES[latest.status],
               activityLevel: latest.activityLevel,
               reasons: [latest.explanation],
+              advice: ADVICE[latest.status],
             }
           : null,
       sessionContext: {

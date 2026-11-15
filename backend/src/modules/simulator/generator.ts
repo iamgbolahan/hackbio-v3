@@ -52,6 +52,22 @@ function noise(seed: number, channel: number, t: number, scale: number): number 
   return slow * scale * 0.6 + gauss(seed, channel + 50, Math.floor(t / 5000)) * scale * 0.8;
 }
 
+// How far a reading strays from its baseline. The distance is re-drawn every 90 seconds: usually small, sometimes
+// large, either side of the baseline, and eased from one draw to the next so the line moves instead of flipping
+// between two numbers. Amplitude is the largest stray for that parameter.
+function disparity(seed: number, channel: number, t: number, amplitude: number): number {
+  const window = 90_000;
+  const index = Math.floor(t / window);
+  const fraction = (t - index * window) / window;
+  const eased = fraction * fraction * (3 - 2 * fraction);
+  const draw = (i: number) => {
+    const size = Math.pow(hash(seed, channel + 100, i), 1.7); // most draws small, a few near the maximum
+    const side = hash(seed, channel + 200, i) < 0.5 ? -1 : 1;
+    return side * size * amplitude;
+  };
+  return draw(index) * (1 - eased) + draw(index + 1) * eased;
+}
+
 export function seedFor(astronautId: string): number {
   let h = 2166136261;
   for (let i = 0; i < astronautId.length; i++) {
@@ -114,7 +130,12 @@ export function sample(
   seed: number,
   base: SimBaseline,
   t: number,
-  options: { inFlight: boolean; frequentEpisodes: boolean },
+  options: {
+    inFlight: boolean;
+    frequentEpisodes: boolean;
+    // Minutes since the monitoring session began, when it is recent: one parameter opens in the WATCH range.
+    minutesIntoSession?: number;
+  },
 ): SimSample {
   const episode = episodeAt(seed, t, options.frequentEpisodes);
   const activity = activityAt(seed, t, episode);
@@ -122,11 +143,11 @@ export function sample(
   const asleep = hour >= 23 || hour < 7 ? 1 : 0;
   const flight = options.inFlight ? 1 : 0;
 
-  let rr = base.rr - 0.3 * flight + [0, 2.2, 6][activity]! - 0.6 * asleep + noise(seed, 1, t, 0.55);
-  let spo2 = base.spo2 - [0, 0.2, 0.5][activity]! + noise(seed, 2, t, 0.4);
-  let sbp = base.sbp - 10 * flight + [0, 7, 24][activity]! - 5 * asleep + noise(seed, 3, t, 1.8);
-  const dbp = base.dbp - 5.5 * flight + [0, 4, 9][activity]! - 3 * asleep + noise(seed, 4, t, 1.1);
-  let glucose = 86 + noise(seed, 5, t, 2.5);
+  let rr = base.rr - 0.3 * flight + [0, 2.2, 6][activity]! - 0.6 * asleep + noise(seed, 1, t, 0.4) + disparity(seed, 1, t, 5);
+  let spo2 = base.spo2 - [0, 0.2, 0.5][activity]! + noise(seed, 2, t, 0.3) + disparity(seed, 2, t, 2.6);
+  let sbp = base.sbp - 10 * flight + [0, 7, 24][activity]! - 5 * asleep + noise(seed, 3, t, 1.2) + disparity(seed, 3, t, 14);
+  const dbp = base.dbp - 5.5 * flight + [0, 4, 9][activity]! - 3 * asleep + noise(seed, 4, t, 0.8) + disparity(seed, 4, t, 11);
+  let glucose = 86 + noise(seed, 5, t, 1.8) + disparity(seed, 5, t, 15);
   for (const meal of [7.5, 12.5, 18.5]) {
     const since = hour - meal;
     if (since > 0) glucose += (since / 0.75) * 38 * Math.exp(1 - since / 0.75);
@@ -140,6 +161,15 @@ export function sample(
     if (episode.kind === "rr_high") rr += (22.3 - rr) * w;
     if (episode.kind === "bp_low") sbp += (97 - sbp) * w;
     tag = `sim_${episode.kind}`;
+  }
+
+  // First 25 minutes of a session: one parameter (SpO2 or respiratory rate, by astronaut) starts in WATCH and settles.
+  const m = options.minutesIntoSession;
+  if (m !== undefined && m >= 0 && m < 25) {
+    const w = m < 15 ? 1 : (25 - m) / 10;
+    if (seed % 2 === 1) spo2 += (94 - spo2) * w;
+    else rr += (22.4 - rr) * w;
+    tag ??= "sim_session_start_watch";
   }
 
   const lowQuality = hash(seed, 41, Math.floor(t / 5000)) < 0.01;

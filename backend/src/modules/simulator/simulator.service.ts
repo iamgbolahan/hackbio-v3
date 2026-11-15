@@ -77,6 +77,7 @@ export class SimulatorService {
           base,
           state.lastTs,
           ceiling,
+          session.startedAt.getTime(),
         );
         for (let i = 0; i < records.length; i += CHUNK)
           await this.ingest.ingestBatch(records.slice(i, i + CHUNK));
@@ -119,6 +120,7 @@ export class SimulatorService {
     base: SimBaseline,
     fromExclusive: number,
     toInclusive: number,
+    sessionStart: number,
   ): ReadingRecord[] {
     const seed = seedFor(astronautId);
     const records: ReadingRecord[] = [];
@@ -127,10 +129,10 @@ export class SimulatorService {
     // Coarse five-minute steps for the old part of the gap, then full-rate readings for the last half hour.
     let t = Math.floor(start / COARSE_MS) * COARSE_MS + COARSE_MS;
     for (; t <= toInclusive && t < fineFrom; t += COARSE_MS)
-      if (t > fromExclusive) this.push(records, astronautId, launchDay, sessionId, base, seed, t);
+      if (t > fromExclusive) this.push(records, astronautId, launchDay, sessionId, base, seed, t, sessionStart);
     t = Math.max(Math.ceil(Math.max(fineFrom, start) / STEP_MS) * STEP_MS, fromExclusive + STEP_MS);
     for (; t <= toInclusive; t += STEP_MS)
-      this.push(records, astronautId, launchDay, sessionId, base, seed, t);
+      this.push(records, astronautId, launchDay, sessionId, base, seed, t, sessionStart);
     return records;
   }
 
@@ -142,6 +144,7 @@ export class SimulatorService {
     base: SimBaseline,
     seed: number,
     t: number,
+    sessionStart?: number,
   ): void {
     if (inDropout(seed, t)) return; // the sensor was off: no record, like a real feed
     const date = new Date(t);
@@ -149,6 +152,7 @@ export class SimulatorService {
     const s = sample(seed, base, t, {
       inFlight: missionDay >= launchDay,
       frequentEpisodes: env.SIM_DEMO_EPISODES,
+      minutesIntoSession: sessionStart === undefined ? undefined : (t - sessionStart) / 60_000,
     });
     out.push({
       timestampUtc: date,

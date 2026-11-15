@@ -53,6 +53,7 @@ export interface OverviewResponse {
     headline: string;
     activityLevel: ActivityLevel;
     reasons: string[];
+    advice: string;
   } | null;
   sessionContext: {
     sessionId: string | null;

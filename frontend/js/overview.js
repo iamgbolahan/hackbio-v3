@@ -171,7 +171,16 @@ function renderStatus(data) {
         p.textContent = reason;
         return p;
     });
-    el.interpretation.replaceChildren(el.interpretationTitle, ...paragraphs);
+    const advice = document.createElement("p");
+    advice.className = "interpretation-advice";
+    advice.textContent = status.advice ? `What to do: ${status.advice}` : "";
+    el.interpretation.replaceChildren(el.interpretationTitle, ...paragraphs, ...(status.advice ? [advice] : []));
+    // Green / yellow / red follows the status level.
+    el.interpretation.dataset.level = level;
+    const icon = document.querySelector(".interpretation-icon");
+    if (icon) icon.dataset.level = level;
+    const summaryCard = el.pill ? el.pill.closest(".card") : null;
+    if (summaryCard) summaryCard.dataset.level = level;
 }
 
 function renderConnection(data) {
