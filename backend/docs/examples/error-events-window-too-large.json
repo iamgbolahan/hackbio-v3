@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/events/A01?from=2026-09-01T00:00:00Z&to=2026-11-06T00:00:00Z"
+  },
+  "status": 400,
+  "response": {
+    "error": "window_too_large",
+    "message": "The event window may span at most 31 days"
+  }
+}

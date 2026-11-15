@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/api/readings",
+    "body": {
+      "timestamp_utc": "2026-11-14T10:00:00Z",
+      "astronaut_id": "A01",
+      "session_id": "A01-D38",
+      "source": "fitbit",
+      "in_flight": true,
+      "activity_level": "jogging",
+      "spo2_pct": 98
+    }
+  },
+  "status": 400,
+  "response": {
+    "error": "validation_failed",
+    "details": [
+      {
+        "field": "source",
+        "message": "Invalid enum value. Expected 'bio_monitor' | 'glucose_sensor' | 'manual_entry' | 'mock', received 'fitbit'"
+      },
+      {
+        "field": "activity_level",
+        "message": "Invalid enum value. Expected 'low' | 'moderate' | 'high', received 'jogging'"
+      }
+    ]
+  }
+}

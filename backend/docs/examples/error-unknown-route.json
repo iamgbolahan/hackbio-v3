@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/nope"
+  },
+  "status": 404,
+  "response": {
+    "error": "route_not_found",
+    "message": "No route for GET /api/nope"
+  }
+}

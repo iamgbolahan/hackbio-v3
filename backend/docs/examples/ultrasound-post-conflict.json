@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/api/ultrasound",
+    "body": {
+      "timestamp_utc": "2026-11-13T14:00:00Z",
+      "astronaut_id": "A01",
+      "source": "manual_entry",
+      "in_flight": true,
+      "condition": "spaceflight",
+      "onsd_mm": 6.4
+    }
+  },
+  "status": 409,
+  "response": {
+    "error": "scan_already_exists",
+    "message": "A scan for A01 at 2026-11-13T14:00:00.000Z already exists"
+  }
+}

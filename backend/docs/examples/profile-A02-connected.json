@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/profile/A02"
+  },
+  "status": 200,
+  "response": {
+    "astronautId": "A02",
+    "displayName": "Crew Member 02",
+    "crewNumber": "02",
+    "sex": "F",
+    "mission": {
+      "name": "Artemis"
+    },
+    "identityStatus": {
+      "state": "verified",
+      "description": "Astronaut identity verified via onboard device"
+    },
+    "baselineStatus": {
+      "state": "approved",
+      "label": "Approved baseline"
+    },
+    "deviceStatus": {
+      "state": "connected",
+      "label": "Bio-Monitor linked"
+    },
+    "updatedAt": "2026-11-14T22:07:59.969Z"
+  }
+}

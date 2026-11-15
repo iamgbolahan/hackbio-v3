@@ -1,0 +1,20 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/api/readings",
+    "body": {
+      "timestamp_utc": "2026-11-14T10:00:00Z",
+      "astronaut_id": "A99",
+      "session_id": "A99-D01",
+      "source": "mock",
+      "in_flight": true,
+      "activity_level": "low",
+      "spo2_pct": 98
+    }
+  },
+  "status": 404,
+  "response": {
+    "error": "astronaut_not_found",
+    "message": "No astronaut with id A99"
+  }
+}

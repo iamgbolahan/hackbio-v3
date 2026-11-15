@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/trends/A01?period=14"
+  },
+  "status": 400,
+  "response": {
+    "error": "validation_failed",
+    "details": [
+      {
+        "field": "period",
+        "message": "Invalid enum value. Expected '7' | '30', received '14'"
+      }
+    ]
+  }
+}

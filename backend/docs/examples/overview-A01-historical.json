@@ -1,0 +1,65 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/overview/A01"
+  },
+  "status": 200,
+  "response": {
+    "astronautId": "A01",
+    "asOf": "2026-11-06T23:55:00.000Z",
+    "missionDay": 30,
+    "inFlight": true,
+    "bioMonitorConnected": false,
+    "status": {
+      "level": "NORMAL",
+      "headline": "No sustained unexplained deviations detected",
+      "activityLevel": "low",
+      "reasons": ["Measurements remain close to your baseline."]
+    },
+    "sessionContext": {
+      "sessionId": "A01-D30",
+      "baselineVerified": true,
+      "wearerAssociationConfirmed": true,
+      "signalQuality": "OK"
+    },
+    "readings": {
+      "respiratoryRate": {
+        "value": 13.9,
+        "unit": "breaths/min",
+        "baseline": 15.3,
+        "deviationPct": -8.96,
+        "status": "NORMAL"
+      },
+      "oxygenSaturation": {
+        "value": 97,
+        "unit": "%",
+        "baseline": 98,
+        "deviationPct": -1.01,
+        "status": "NORMAL"
+      },
+      "bloodPressure": {
+        "systolic": 103,
+        "diastolic": 64,
+        "unit": "mmHg",
+        "baseline": {
+          "systolic": 112,
+          "diastolic": 70
+        },
+        "status": "NORMAL"
+      },
+      "bloodGlucose": {
+        "value": 86,
+        "unit": "mg/dL",
+        "fasting": false,
+        "baseline": null,
+        "status": "NORMAL"
+      },
+      "heartRate": {
+        "status": "unavailable"
+      },
+      "skinTemperature": {
+        "status": "unavailable"
+      }
+    }
+  }
+}

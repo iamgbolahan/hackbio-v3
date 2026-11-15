@@ -1,0 +1,907 @@
+openapi: 3.1.0
+info:
+  title: HackBio astronaut health-monitoring API
+  version: 0.1.0
+  description: |
+    Backend for the NASA Space Apps 2026 astronaut health-monitoring prototype.
+    Read endpoints (dashboard) return camelCase JSON. Ingest endpoints accept the proposal's
+    snake_case "common record". There is no authentication in this prototype.
+    Every value in the seeded data is synthetic; thresholds are prototype rules, not medical limits.
+    Human-readable guide: docs/FRONTEND_CONTRACT.md. Real captured responses: docs/examples/.
+servers:
+  - url: http://localhost:3000
+    description: Local (npm run dev)
+  - url: https://hackbio-backend.onrender.com
+    description: Live (Render, seeded with the mock data)
+# No authentication in this prototype: the onboard device performs the biometric check.
+security: []
+tags:
+  - name: Dashboard
+    description: Read endpoints behind the four screens.
+  - name: Ingest
+    description: How data enters the system (sensors, operator form, CSV).
+  - name: Meta
+    description: Service health.
+paths:
+  /health:
+    get:
+      tags: [Meta]
+      operationId: getHealth
+      summary: Liveness check
+      responses:
+        "200":
+          description: Service is up
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ok]
+                properties:
+                  ok: { type: boolean, const: true }
+
+  /api/astronauts:
+    get:
+      tags: [Dashboard]
+      operationId: listAstronauts
+      summary: List astronauts (for an astronaut picker)
+      responses:
+        "200":
+          description: All astronauts, ordered by id
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/AstronautSummary" }
+
+  /api/overview/{astronautId}:
+    get:
+      tags: [Dashboard]
+      operationId: getOverview
+      summary: Overview screen - current status and latest readings vs personal baseline
+      parameters: [{ $ref: "#/components/parameters/AstronautId" }]
+      responses:
+        "200":
+          description: Overview. `status` and `readings` are null when the astronaut has no evaluated readings yet.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/OverviewResponse" }
+        "404": { $ref: "#/components/responses/AstronautNotFound" }
+
+  /api/trends/{astronautId}:
+    get:
+      tags: [Dashboard]
+      operationId: getTrends
+      summary: Health Trends screen - daily averages for 7 or 30 days, plus ultrasound scans
+      parameters:
+        - { $ref: "#/components/parameters/AstronautId" }
+        - name: period
+          in: query
+          required: true
+          schema: { type: string, enum: ["7", "30"] }
+      responses:
+        "200":
+          description: The window ends on the latest day that has data (asOf), not on today.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TrendsResponse" }
+        "400": { $ref: "#/components/responses/ValidationFailed" }
+        "404": { $ref: "#/components/responses/AstronautNotFound" }
+
+  /api/profile/{astronautId}:
+    get:
+      tags: [Dashboard]
+      operationId: getProfile
+      summary: Astronaut Profile screen - identity and status badges
+      parameters: [{ $ref: "#/components/parameters/AstronautId" }]
+      responses:
+        "200":
+          description: Profile (shape already consumed by the frontend's profile.js)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ProfileResponse" }
+        "404": { $ref: "#/components/responses/AstronautNotFound" }
+
+  /api/baseline/{astronautId}:
+    get:
+      tags: [Dashboard]
+      operationId: getBaseline
+      summary: Astronaut Profile screen - personal baseline statistics
+      parameters: [{ $ref: "#/components/parameters/AstronautId" }]
+      responses:
+        "200":
+          description: |
+            `parameters` holds the normal-Earth reference cards. `byCondition` lists every test condition
+            that has data. Missing statistics come back as `{ "status": "unavailable" }`, never as a 404.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BaselineResponse" }
+        "404": { $ref: "#/components/responses/AstronautNotFound" }
+
+  /api/connection/{astronautId}:
+    get:
+      tags: [Dashboard]
+      operationId: getConnection
+      summary: Connection screen - the four connection steps
+      parameters: [{ $ref: "#/components/parameters/AstronautId" }]
+      responses:
+        "200":
+          description: Always four steps, in order.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConnectionResponse" }
+        "404": { $ref: "#/components/responses/AstronautNotFound" }
+
+  /api/events/{astronautId}:
+    get:
+      tags: [Dashboard]
+      operationId: listStatusEvents
+      summary: Moments the overall status changed (timeline / alert history)
+      parameters:
+        - { $ref: "#/components/parameters/AstronautId" }
+        - name: from
+          in: query
+          required: false
+          description: ISO 8601 start. Default is 7 days before `to`.
+          schema: { type: string, format: date-time }
+        - name: to
+          in: query
+          required: false
+          description: ISO 8601 end. Default is the astronaut's latest reading.
+          schema: { type: string, format: date-time }
+      responses:
+        "200":
+          description: Events in time order. from/to are null when the astronaut has no readings.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EventsResponse" }
+        "400":
+          description: Bad dates (validation_failed) or a window longer than 31 days (window_too_large)
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - { $ref: "#/components/schemas/ValidationError" }
+                  - { $ref: "#/components/schemas/Error" }
+        "404": { $ref: "#/components/responses/AstronautNotFound" }
+
+  /api/readings:
+    post:
+      tags: [Ingest]
+      operationId: postReading
+      summary: Ingest one real-time record (Bio-Monitor, glucose sensor, or mock replay)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ReadingRecord" }
+      responses:
+        "201":
+          description: Stored. `status` and `explanation` are null when the record was marked ARTIFACT.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ReadingStored" }
+        "200":
+          description: Duplicate (same timestamp_utc + astronaut_id + source already stored); nothing changed.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Duplicate" }
+        "400":
+          description: Validation failed, or malformed JSON (error = invalid_json)
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - { $ref: "#/components/schemas/ValidationError" }
+                  - { $ref: "#/components/schemas/Error" }
+        "404": { $ref: "#/components/responses/AstronautNotFound" }
+
+  /api/ultrasound:
+    post:
+      tags: [Ingest]
+      operationId: postUltrasound
+      summary: Manual entry of one scheduled ultrasound scan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UltrasoundRecord" }
+      responses:
+        "201":
+          description: Stored and evaluated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UltrasoundStored" }
+        "400": { $ref: "#/components/responses/ValidationFailed" }
+        "404": { $ref: "#/components/responses/AstronautNotFound" }
+        "409":
+          description: A scan for this astronaut at this timestamp already exists (error = scan_already_exists)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /api/upload:
+    post:
+      tags: [Ingest]
+      operationId: uploadCsv
+      summary: Bulk CSV upload (profiles, baseline sessions, ultrasound, stream)
+      description: |
+        Body is the raw CSV text with Content-Type text/csv. Columns match the mock files in data/mock/.
+        Upload `profiles` first. Bad rows are reported per line; good rows are still stored.
+      parameters:
+        - name: type
+          in: query
+          required: true
+          schema:
+            { type: string, enum: [profiles, baseline, ultrasound, stream] }
+      requestBody:
+        required: true
+        content:
+          text/csv:
+            schema: { type: string }
+            example: |
+              timestamp_utc,astronaut_id,session_id,source,in_flight,activity_level,resp_rate_bpm,spo2_pct,sbp_mmhg,dbp_mmhg
+              2026-11-13T00:00:00Z,A01,A01-D37,mock,true,low,15,98,107,66
+      responses:
+        "200":
+          description: Summary (also returned when some rows failed)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UploadSummary" }
+        "400":
+          description: Unknown type (validation_failed), non-CSV body (expected_csv), unparseable CSV (invalid_csv) or missing columns (missing_columns)
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - { $ref: "#/components/schemas/ValidationError" }
+                  - { $ref: "#/components/schemas/Error" }
+
+components:
+  parameters:
+    AstronautId:
+      name: astronautId
+      in: path
+      required: true
+      description: Astronaut id, e.g. A01 or A02 in the seeded data.
+      schema: { type: string, examples: [A01] }
+
+  responses:
+    AstronautNotFound:
+      description: Unknown astronaut (error = astronaut_not_found)
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+          example:
+            { error: astronaut_not_found, message: No astronaut with id A99 }
+    ValidationFailed:
+      description: Request failed validation
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ValidationError" }
+
+  schemas:
+    HealthStatus:
+      type: string
+      enum: [NORMAL, WATCH, ATTENTION]
+    ActivityLevel:
+      type: string
+      enum: [low, moderate, high]
+    SignalQuality:
+      type: string
+      enum: [OK, LOW, ARTIFACT]
+    Source:
+      type: string
+      enum: [bio_monitor, glucose_sensor, manual_entry, mock]
+    TestCondition:
+      type: string
+      enum:
+        [
+          normal_earth,
+          head_down_tilt,
+          dry_immersion,
+          raised_co2,
+          reduced_pressure,
+        ]
+    Unavailable:
+      type: object
+      description: Metric not measured by this system (heart rate, skin temperature) or no data yet.
+      required: [status]
+      properties:
+        status: { type: string, const: unavailable }
+
+    Error:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+          description: Stable machine-readable code
+          examples:
+            [
+              astronaut_not_found,
+              scan_already_exists,
+              window_too_large,
+              expected_csv,
+              invalid_csv,
+              missing_columns,
+              invalid_json,
+              route_not_found,
+              internal_error,
+            ]
+        message: { type: string }
+    ValidationError:
+      type: object
+      required: [error, details]
+      properties:
+        error: { type: string, const: validation_failed }
+        details:
+          type: array
+          items:
+            type: object
+            required: [field, message]
+            properties:
+              field:
+                {
+                  type: string,
+                  description: "Request field (snake_case for ingest, query name for reads)",
+                }
+              message: { type: string }
+
+    AstronautSummary:
+      type: object
+      required:
+        [astronautId, displayName, crewNumber, sex, launchDay, missionName]
+      properties:
+        astronautId: { type: string, examples: [A01] }
+        displayName: { type: string, examples: [Mariam] }
+        crewNumber: { type: string, examples: ["01"] }
+        sex: { type: string, enum: [M, F] }
+        launchDay:
+          {
+            type: integer,
+            description: Mission day of launch (days before are on the ground),
+          }
+        missionName: { type: [string, "null"], examples: [Artemis] }
+
+    OverviewResponse:
+      type: object
+      required:
+        [
+          astronautId,
+          asOf,
+          missionDay,
+          inFlight,
+          bioMonitorConnected,
+          status,
+          sessionContext,
+          readings,
+        ]
+      properties:
+        astronautId: { type: string }
+        asOf:
+          {
+            type: [string, "null"],
+            format: date-time,
+            description: Timestamp of the latest evaluated reading,
+          }
+        missionDay: { type: [integer, "null"] }
+        inFlight: { type: [boolean, "null"] }
+        bioMonitorConnected:
+          {
+            type: boolean,
+            description: "Latest reading is within CONNECTED_WITHIN_MIN (15) minutes of the server clock",
+          }
+        status:
+          oneOf:
+            - type: "null"
+            - type: object
+              required: [level, headline, activityLevel, reasons]
+              properties:
+                level: { $ref: "#/components/schemas/HealthStatus" }
+                headline:
+                  {
+                    type: string,
+                    description: Short sentence for the status card title,
+                  }
+                activityLevel: { $ref: "#/components/schemas/ActivityLevel" }
+                reasons:
+                  type: array
+                  items: { type: string }
+                  description: Plain-language explanation(s) for the "Why this status?" card
+        sessionContext:
+          type: object
+          required:
+            [
+              sessionId,
+              baselineVerified,
+              wearerAssociationConfirmed,
+              signalQuality,
+            ]
+          properties:
+            sessionId: { type: [string, "null"] }
+            baselineVerified: { type: boolean }
+            wearerAssociationConfirmed: { type: boolean }
+            signalQuality:
+              oneOf:
+                - type: "null"
+                - { $ref: "#/components/schemas/SignalQuality" }
+        readings:
+          oneOf:
+            - type: "null"
+            - type: object
+              required:
+                [
+                  respiratoryRate,
+                  oxygenSaturation,
+                  bloodPressure,
+                  bloodGlucose,
+                  heartRate,
+                  skinTemperature,
+                ]
+              properties:
+                respiratoryRate:
+                  oneOf:
+                    [
+                      { $ref: "#/components/schemas/SingleReading" },
+                      { $ref: "#/components/schemas/Unavailable" },
+                    ]
+                oxygenSaturation:
+                  oneOf:
+                    [
+                      { $ref: "#/components/schemas/SingleReading" },
+                      { $ref: "#/components/schemas/Unavailable" },
+                    ]
+                bloodPressure:
+                  oneOf:
+                    [
+                      { $ref: "#/components/schemas/BloodPressureReading" },
+                      { $ref: "#/components/schemas/Unavailable" },
+                    ]
+                bloodGlucose:
+                  oneOf:
+                    [
+                      { $ref: "#/components/schemas/GlucoseReading" },
+                      { $ref: "#/components/schemas/Unavailable" },
+                    ]
+                heartRate: { $ref: "#/components/schemas/Unavailable" }
+                skinTemperature: { $ref: "#/components/schemas/Unavailable" }
+    SingleReading:
+      type: object
+      required: [value, unit, baseline, deviationPct, status]
+      properties:
+        value: { type: number }
+        unit: { type: string, examples: ["breaths/min", "%"] }
+        baseline:
+          {
+            type: [number, "null"],
+            description: "Personal reference this reading is compared with (in flight: analog or adjusted baseline), 1 decimal",
+          }
+        deviationPct:
+          {
+            type: [number, "null"],
+            description: "% from baseline; only computed for resting (low activity) readings",
+          }
+        status: { $ref: "#/components/schemas/HealthStatus" }
+    BloodPressureReading:
+      type: object
+      required: [systolic, diastolic, unit, baseline, status]
+      properties:
+        systolic: { type: number }
+        diastolic: { type: number }
+        unit: { type: string, const: mmHg }
+        baseline:
+          oneOf:
+            - type: "null"
+            - type: object
+              required: [systolic, diastolic]
+              properties:
+                systolic: { type: number }
+                diastolic: { type: number }
+        status: { $ref: "#/components/schemas/HealthStatus" }
+    GlucoseReading:
+      type: object
+      required: [value, unit, fasting, baseline, status]
+      properties:
+        value: { type: number }
+        unit: { type: string, const: mg/dL }
+        fasting: { type: [boolean, "null"] }
+        baseline: { type: "null", description: Glucose has no session baseline }
+        status: { $ref: "#/components/schemas/HealthStatus" }
+
+    TrendsResponse:
+      type: object
+      required: [period, asOf, metrics, ultrasound]
+      properties:
+        period: { type: integer, enum: [7, 30] }
+        asOf:
+          {
+            type: [string, "null"],
+            format: date,
+            description: Last day in the window (latest day with data),
+          }
+        metrics:
+          type: object
+          required:
+            [
+              heartRate,
+              skinTemperature,
+              respiratoryRate,
+              oxygenSaturation,
+              bloodGlucose,
+              bloodPressure,
+            ]
+          properties:
+            heartRate: { $ref: "#/components/schemas/Unavailable" }
+            skinTemperature: { $ref: "#/components/schemas/Unavailable" }
+            respiratoryRate: { $ref: "#/components/schemas/SingleValueTrend" }
+            oxygenSaturation: { $ref: "#/components/schemas/SingleValueTrend" }
+            bloodGlucose: { $ref: "#/components/schemas/SingleValueTrend" }
+            bloodPressure: { $ref: "#/components/schemas/BloodPressureTrend" }
+        ultrasound:
+          type: array
+          description: Every scan for the astronaut (not limited to the window), oldest first
+          items: { $ref: "#/components/schemas/UltrasoundTrendPoint" }
+    SingleValueTrend:
+      type: object
+      required: [status, unit, min, max, days]
+      properties:
+        status: { type: string, const: available }
+        unit: { type: string }
+        min: { type: number, description: Chart axis minimum }
+        max: { type: number, description: Chart axis maximum }
+        days:
+          type: array
+          description: One entry per day that has data, oldest first. Days without data are omitted.
+          items:
+            type: object
+            required: [date, missionDay, value, samples]
+            properties:
+              date: { type: string, format: date }
+              missionDay: { type: [integer, "null"] }
+              value: { type: number, description: "Daily average, 1 decimal" }
+              samples: { type: integer, description: Readings averaged }
+    BloodPressureTrend:
+      type: object
+      required: [status, unit, min, max, days]
+      properties:
+        status: { type: string, const: available }
+        unit: { type: string, const: mmHg }
+        min: { type: number }
+        max: { type: number }
+        days:
+          type: array
+          items:
+            type: object
+            required: [date, missionDay, systolic, diastolic, status]
+            properties:
+              date: { type: string, format: date }
+              missionDay: { type: [integer, "null"] }
+              systolic: { type: number }
+              diastolic: { type: number }
+              status: { $ref: "#/components/schemas/HealthStatus" }
+    UltrasoundTrendPoint:
+      type: object
+      required:
+        [
+          timestampUtc,
+          missionDay,
+          inFlight,
+          status,
+          ijvAreaMm2,
+          ijvFlowGrade,
+          onsdMm,
+          onsdBaselineMm,
+          cimtMm,
+          lvefPct,
+          muscleThicknessMm,
+          muscleLossPct,
+        ]
+      properties:
+        timestampUtc: { type: string, format: date-time }
+        missionDay:
+          { type: [integer, "null"], description: null for pre-flight scans }
+        inFlight: { type: boolean }
+        status: { $ref: "#/components/schemas/HealthStatus" }
+        ijvAreaMm2: { type: [number, "null"] }
+        ijvFlowGrade: { type: [integer, "null"], minimum: 1, maximum: 4 }
+        onsdMm: { type: [number, "null"] }
+        onsdBaselineMm:
+          { type: [number, "null"], description: Mean of pre-flight scans }
+        cimtMm: { type: [number, "null"] }
+        lvefPct: { type: [number, "null"] }
+        muscleThicknessMm: { type: [number, "null"] }
+        muscleLossPct:
+          {
+            type: [number, "null"],
+            description: "% below pre-flight mean (positive = loss)",
+          }
+
+    ProfileResponse:
+      type: object
+      required:
+        [
+          astronautId,
+          displayName,
+          crewNumber,
+          sex,
+          mission,
+          identityStatus,
+          baselineStatus,
+          deviceStatus,
+          updatedAt,
+        ]
+      properties:
+        astronautId: { type: string }
+        displayName: { type: string }
+        crewNumber: { type: string }
+        sex: { type: string, enum: [M, F] }
+        mission:
+          oneOf:
+            - type: "null"
+            - type: object
+              required: [name]
+              properties:
+                name: { type: string }
+        identityStatus:
+          type: object
+          required: [state, description]
+          properties:
+            state: { type: string, const: verified }
+            description: { type: string }
+        baselineStatus:
+          type: object
+          required: [state, label]
+          properties:
+            state: { type: string, enum: [approved, pending] }
+            label: { type: string }
+        deviceStatus:
+          type: object
+          required: [state, label]
+          properties:
+            state: { type: string, enum: [connected, disconnected] }
+            label: { type: string }
+        updatedAt: { type: string, format: date-time }
+
+    MeanAndSd:
+      type: object
+      required: [status, mean, standardDeviation, n, referenceLabel]
+      properties:
+        status: { type: string, enum: [approved, provisional] }
+        mean: { type: number }
+        standardDeviation: { type: [number, "null"] }
+        n: { type: integer, description: Valid sessions }
+        referenceLabel: { type: string }
+    BloodPressureMeanAndSd:
+      type: object
+      required: [status, mean, standardDeviation, n, referenceLabel]
+      properties:
+        status: { type: string, enum: [approved, provisional] }
+        mean:
+          type: object
+          required: [systolicMmHg, diastolicMmHg]
+          properties:
+            systolicMmHg: { type: number }
+            diastolicMmHg: { type: number }
+        standardDeviation:
+          type: object
+          required: [systolicMmHg, diastolicMmHg]
+          properties:
+            systolicMmHg: { type: [number, "null"] }
+            diastolicMmHg: { type: [number, "null"] }
+        n: { type: integer }
+        referenceLabel: { type: string }
+    BaselineCards:
+      type: object
+      required: [respiratoryRate, oxygenSaturation, bloodPressure]
+      properties:
+        respiratoryRate:
+          oneOf:
+            [
+              { $ref: "#/components/schemas/MeanAndSd" },
+              { $ref: "#/components/schemas/Unavailable" },
+            ]
+        oxygenSaturation:
+          oneOf:
+            [
+              { $ref: "#/components/schemas/MeanAndSd" },
+              { $ref: "#/components/schemas/Unavailable" },
+            ]
+        bloodPressure:
+          oneOf:
+            [
+              { $ref: "#/components/schemas/BloodPressureMeanAndSd" },
+              { $ref: "#/components/schemas/Unavailable" },
+            ]
+    BaselineResponse:
+      type: object
+      required: [approvalStatus, methodDescription, parameters, byCondition]
+      properties:
+        approvalStatus:
+          type: object
+          required: [label]
+          properties:
+            label: { type: string }
+        methodDescription: { type: string }
+        parameters:
+          allOf:
+            - { $ref: "#/components/schemas/BaselineCards" }
+            - type: object
+              required: [heartRate, skinTemperature]
+              properties:
+                heartRate: { $ref: "#/components/schemas/Unavailable" }
+                skinTemperature: { $ref: "#/components/schemas/Unavailable" }
+        byCondition:
+          type: array
+          items:
+            allOf:
+              - type: object
+                required: [condition]
+                properties:
+                  condition: { $ref: "#/components/schemas/TestCondition" }
+              - { $ref: "#/components/schemas/BaselineCards" }
+
+    ConnectionResponse:
+      type: object
+      required: [astronautId, steps]
+      properties:
+        astronautId: { type: string }
+        steps:
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            type: object
+            required: [step, key, label, status]
+            properties:
+              step: { type: integer, enum: [1, 2, 3, 4] }
+              key:
+                {
+                  type: string,
+                  enum:
+                    [
+                      verify_identity,
+                      retrieve_baseline,
+                      connect_bio_monitor,
+                      start_monitoring,
+                    ],
+                }
+              label: { type: string }
+              status:
+                type: string
+                enum: [verified, pending, connected, waiting, ready, blocked]
+                description: "step 1: verified | step 2: verified, pending | step 3: connected, waiting | step 4: ready, blocked"
+              note: { type: string, description: Step 1 only }
+              sessionId: { type: [string, "null"], description: Step 3 only }
+              lastReadingAt:
+                {
+                  type: [string, "null"],
+                  format: date-time,
+                  description: Step 3 only,
+                }
+
+    EventsResponse:
+      type: object
+      required: [astronautId, from, to, events]
+      properties:
+        astronautId: { type: string }
+        from: { type: [string, "null"], format: date-time }
+        to: { type: [string, "null"], format: date-time }
+        events:
+          type: array
+          items:
+            type: object
+            required: [timestampUtc, from, to, explanation]
+            properties:
+              timestampUtc: { type: string, format: date-time }
+              from:
+                oneOf:
+                  - type: "null"
+                  - { $ref: "#/components/schemas/HealthStatus" }
+              to: { $ref: "#/components/schemas/HealthStatus" }
+              explanation: { type: [string, "null"] }
+
+    ReadingRecord:
+      type: object
+      description: The proposal's common record. Measurement fields may be null or omitted ("not measured now"), but at least one must be present.
+      required:
+        [
+          timestamp_utc,
+          astronaut_id,
+          session_id,
+          source,
+          in_flight,
+          activity_level,
+        ]
+      properties:
+        timestamp_utc:
+          {
+            type: string,
+            format: date-time,
+            examples: ["2026-10-15T00:05:00Z"],
+          }
+        astronaut_id: { type: string, examples: [A01] }
+        session_id: { type: string, examples: [A01-D08] }
+        source: { $ref: "#/components/schemas/Source" }
+        in_flight: { type: boolean }
+        activity_level: { $ref: "#/components/schemas/ActivityLevel" }
+        resp_rate_bpm: { type: [number, "null"] }
+        spo2_pct: { type: [number, "null"] }
+        sbp_mmhg: { type: [number, "null"] }
+        dbp_mmhg: { type: [number, "null"] }
+        glucose_mgdl: { type: [number, "null"] }
+        fasting:
+          { type: [boolean, "null"], description: True only if fasted >= 8 h }
+        signal_quality:
+          allOf: [{ $ref: "#/components/schemas/SignalQuality" }]
+          default: OK
+        mission_day: { type: [integer, "null"] }
+        scenario_tag: { type: [string, "null"], description: Mock data only }
+    ReadingStored:
+      type: object
+      required: [stored, signal_quality, status, explanation]
+      properties:
+        stored: { type: boolean, const: true }
+        signal_quality: { $ref: "#/components/schemas/SignalQuality" }
+        status:
+          oneOf:
+            - type: "null"
+            - { $ref: "#/components/schemas/HealthStatus" }
+        explanation: { type: [string, "null"] }
+    Duplicate:
+      type: object
+      required: [stored, duplicate]
+      properties:
+        stored: { type: boolean, const: false }
+        duplicate: { type: boolean, const: true }
+
+    UltrasoundRecord:
+      type: object
+      description: At least one measurement is required. Ranges are plausibility limits; outside them the request is rejected.
+      required: [timestamp_utc, astronaut_id, source, in_flight, condition]
+      properties:
+        timestamp_utc: { type: string, format: date-time }
+        astronaut_id: { type: string }
+        source: { $ref: "#/components/schemas/Source" }
+        in_flight: { type: boolean }
+        condition: { type: string, enum: [normal_earth, spaceflight] }
+        mission_day: { type: [integer, "null"] }
+        ijv_area_mm2: { type: [number, "null"], minimum: 0, maximum: 250 }
+        ijv_flow_grade: { type: [integer, "null"], minimum: 1, maximum: 4 }
+        onsd_mm: { type: [number, "null"], minimum: 2, maximum: 12 }
+        cimt_mm: { type: [number, "null"], minimum: 0.1, maximum: 3 }
+        lvef_pct: { type: [number, "null"], minimum: 5, maximum: 95 }
+        muscle_thickness_mm:
+          { type: [number, "null"], minimum: 1, maximum: 150 }
+        scenario_tag: { type: [string, "null"] }
+    UltrasoundStored:
+      type: object
+      required: [stored, status, muscle_loss_pct, explanation]
+      properties:
+        stored: { type: boolean, const: true }
+        status: { $ref: "#/components/schemas/HealthStatus" }
+        muscle_loss_pct: { type: [number, "null"] }
+        explanation: { type: string }
+
+    UploadSummary:
+      type: object
+      required: [type, rows, stored, duplicates, artifacts, errors, error_rows]
+      properties:
+        type: { type: string, enum: [profiles, baseline, ultrasound, stream] }
+        rows: { type: integer }
+        stored: { type: integer }
+        duplicates: { type: integer }
+        artifacts: { type: integer }
+        errors: { type: integer, description: Total failed rows }
+        error_rows:
+          type: array
+          description: First 50 failed rows
+          items:
+            type: object
+            required: [line, message]
+            properties:
+              line:
+                {
+                  type: integer,
+                  description: "1-based line in the file, header = line 1",
+                }
+              message: { type: string }

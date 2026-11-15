@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/overview/A99"
+  },
+  "status": 404,
+  "response": {
+    "error": "astronaut_not_found",
+    "message": "No astronaut with id A99"
+  }
+}

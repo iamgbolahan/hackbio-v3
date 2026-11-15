@@ -1,0 +1,48 @@
+parameter,group,unit,context,status,low,high,low_inclusive,high_inclusive,explained_by_activity,rounding,basis,note
+resp_rate_bpm,realtime_acute,breaths/min,any,NORMAL,12,20,true,true,false,integer,NEWS2 (as cited in proposal),Resting limits; no in-flight change.
+resp_rate_bpm,realtime_acute,breaths/min,any,WATCH,9,11,true,true,true,integer,NEWS2 (as cited in proposal),May be explained by moderate/high activity.
+resp_rate_bpm,realtime_acute,breaths/min,any,WATCH,21,24,true,true,true,integer,NEWS2 (as cited in proposal),May be explained by moderate/high activity.
+resp_rate_bpm,realtime_acute,breaths/min,any,ATTENTION,,8,false,true,false,integer,NEWS2 (as cited in proposal),
+resp_rate_bpm,realtime_acute,breaths/min,any,ATTENTION,25,,true,false,false,integer,NEWS2 (as cited in proposal),
+spo2_pct,realtime_acute,%,any,NORMAL,96,100,true,true,false,integer,NEWS2 (as cited in proposal),Normal cabin air only. Activity never explains SpO2.
+spo2_pct,realtime_acute,%,any,WATCH,92,95,true,true,false,integer,NEWS2 (as cited in proposal),
+spo2_pct,realtime_acute,%,any,ATTENTION,,91,false,true,false,integer,NEWS2 (as cited in proposal),"Values above 100 are physically impossible -> ARTIFACT, not a status."
+sbp_mmhg,realtime_acute,mmHg,ground,NORMAL,111,219,true,true,false,integer,NEWS2 (as cited in proposal),
+sbp_mmhg,realtime_acute,mmHg,ground,WATCH,91,110,true,true,false,integer,NEWS2 (as cited in proposal),"Low side only, so activity cannot explain it."
+sbp_mmhg,realtime_acute,mmHg,ground,ATTENTION,,90,false,true,false,integer,NEWS2 (as cited in proposal),
+sbp_mmhg,realtime_acute,mmHg,ground,ATTENTION,220,,true,false,false,integer,NEWS2 (as cited in proposal),
+sbp_mmhg,realtime_acute,mmHg,in_flight,NORMAL,101,219,true,true,false,integer,spaceflight study (as cited in proposal),"Falls 8-14 mmHg in flight (24-h mean ~106-109), so 101-110 is NORMAL in flight."
+sbp_mmhg,realtime_acute,mmHg,in_flight,WATCH,91,100,true,true,false,integer,prototype design choice (proposal),In-flight WATCH range is a prototype choice.
+sbp_mmhg,realtime_acute,mmHg,in_flight,ATTENTION,,90,false,true,false,integer,NEWS2 (as cited in proposal),
+sbp_mmhg,realtime_acute,mmHg,in_flight,ATTENTION,220,,true,false,false,integer,NEWS2 (as cited in proposal),
+glucose_mgdl,realtime_acute,mg/dL,fasting,NORMAL,70,99,true,true,false,integer,ADA (as cited in proposal),
+glucose_mgdl,realtime_acute,mg/dL,fasting,WATCH,100,199,true,true,false,integer,ADA (as cited in proposal),100-125 prediabetes range; >=126 diabetes range. No in-flight change.
+glucose_mgdl,realtime_acute,mg/dL,non_fasting,NORMAL,70,199,true,true,false,integer,ASSUMPTION (not in proposal),GAP IN PROPOSAL: it gives no NORMAL band for non-fasted readings. Post-meal values of 100-199 are treated as NORMAL here.
+glucose_mgdl,realtime_acute,mg/dL,any_time,WATCH,54,69,true,true,false,integer,ADA (as cited in proposal),No spaceflight-specific low limit exists.
+glucose_mgdl,realtime_acute,mg/dL,any_time,ATTENTION,,54,false,false,false,integer,ADA (as cited in proposal),Below 54.
+glucose_mgdl,realtime_acute,mg/dL,any_time,ATTENTION,200,,true,false,false,integer,ADA (as cited in proposal),
+sbp_mmhg_resting,resting_chronic,mmHg,any,NORMAL,90,119,true,true,false,integer,ACC/AHA (as cited in proposal),In-flight fall of 8-14 mmHg keeps values inside this range.
+sbp_mmhg_resting,resting_chronic,mmHg,any,WATCH,120,180,true,true,true,integer,ACC/AHA (as cited in proposal),
+sbp_mmhg_resting,resting_chronic,mmHg,any,ATTENTION,180,,false,false,false,integer,ACC/AHA (as cited in proposal),Above 180.
+dbp_mmhg_resting,resting_chronic,mmHg,any,NORMAL,60,79,true,true,false,integer,ACC/AHA (as cited in proposal),Dataset has no low limit: a low DBP is judged against the personal baseline only.
+dbp_mmhg_resting,resting_chronic,mmHg,any,WATCH,80,120,true,true,true,integer,ACC/AHA (as cited in proposal),
+dbp_mmhg_resting,resting_chronic,mmHg,any,ATTENTION,120,,false,false,false,integer,ACC/AHA (as cited in proposal),Above 120.
+ijv_flow_grade,ultrasound,grade 1-4,any,NORMAL,1,2,true,true,false,integer,ASSUMPTION (not in proposal),Proposal lists only grade 3 and 4; grades 1-2 are treated as NORMAL.
+ijv_flow_grade,ultrasound,grade 1-4,any,WATCH,3,3,true,true,false,integer,spaceflight study (as cited in proposal),"Stasis (stagnant, sluggish or two-way flow)."
+ijv_flow_grade,ultrasound,grade 1-4,any,ATTENTION,4,4,true,true,false,integer,spaceflight study (as cited in proposal),Reverse flow or non-compressible clot.
+ijv_area_mm2,ultrasound,mm2,ground,NORMAL,0.7,18.9,true,true,false,none,spaceflight study (as cited in proposal),"Seated, on the ground. In flight: expected ~70.3 +/- 29.2; not flagged on its own, flow grade decides."
+onsd_mm,ultrasound,mm,ground,NORMAL,5,5.7,true,true,false,none,spaceflight study (as cited in proposal),"GAP IN PROPOSAL: values >5.7 and <=5.8 have no status. WATCH below is the literal "">5.8""."
+onsd_mm,ultrasound,mm,ground,WATCH,5.8,7.2,false,false,false,none,spaceflight study (as cited in proposal),"In flight, WATCH is relative: above personal baseline + 0.91 mm (see in_flight_adjustments)."
+onsd_mm,ultrasound,mm,any,ATTENTION,7.2,,true,false,false,none,spaceflight study (as cited in proposal),
+cimt_mm,ultrasound,mm,any,NORMAL,0.46,0.9,true,true,false,none,spaceflight study (as cited in proposal),"Astronaut pre-flight mean 0.54 +/- 0.08. No in-flight adjustment (studies conflict, 0 to +20%)."
+cimt_mm,ultrasound,mm,any,WATCH,0.9,1.5,false,true,false,none,spaceflight study (as cited in proposal),
+cimt_mm,ultrasound,mm,any,ATTENTION,1.5,,false,false,false,none,spaceflight study (as cited in proposal),"Above 1.50, or plaque."
+lvef_pct,ultrasound,%,male,NORMAL,52,72,true,true,false,none,ASE/EACVI (as cited in proposal),
+lvef_pct,ultrasound,%,male,WATCH,30,52,true,false,false,none,ASE/EACVI (as cited in proposal),
+lvef_pct,ultrasound,%,male,ATTENTION,,30,false,false,false,none,ASE/EACVI (as cited in proposal),
+lvef_pct,ultrasound,%,female,NORMAL,54,74,true,true,false,none,ASE/EACVI (as cited in proposal),
+lvef_pct,ultrasound,%,female,WATCH,30,54,true,false,false,none,ASE/EACVI (as cited in proposal),
+lvef_pct,ultrasound,%,female,ATTENTION,,30,false,false,false,none,ASE/EACVI (as cited in proposal),
+muscle_loss_pct,ultrasound,% loss vs baseline,any,NORMAL,,4,false,false,false,none,spaceflight study (as cited in proposal),Loss under 4%.
+muscle_loss_pct,ultrasound,% loss vs baseline,any,WATCH,4,13,true,true,false,none,spaceflight study (as cited in proposal),Expected on long missions. Trend only: never an immediate alert.
+muscle_loss_pct,ultrasound,% loss vs baseline,any,ATTENTION,13,,false,false,false,none,prototype design choice (proposal),No value in the dataset; loss beyond 13% is a prototype choice.

@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: hackbio
+      POSTGRES_PASSWORD: hackbio
+      POSTGRES_DB: hackbio
+    ports:
+      - "55440:5432"
+    volumes:
+      - hackbio-pg:/var/lib/postgresql/data
+      - ./docker/init-test-db.sql:/docker-entrypoint-initdb.d/init-test-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hackbio"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  hackbio-pg:

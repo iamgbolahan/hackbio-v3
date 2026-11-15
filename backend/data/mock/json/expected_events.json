@@ -1,0 +1,128 @@
+{
+  "day1_date_utc": "2026-10-08",
+  "launch_day": 8,
+  "time_zone": "UTC",
+  "stream_events": [
+    {
+      "tag": "rr_high_at_rest_sustained",
+      "id": "A01",
+      "days": [
+        14
+      ],
+      "from": "11:00",
+      "to": "12:30",
+      "expected": "WATCH",
+      "then": "ATTENTION if persistence limit passed",
+      "note": "RR 22-24 at low activity for 90 min.",
+      "records": 19
+    },
+    {
+      "tag": "spo2_dip_watch",
+      "id": "A01",
+      "days": [
+        19
+      ],
+      "from": "03:00",
+      "to": "03:25",
+      "expected": "WATCH",
+      "note": "SpO2 93-95 during sleep. Activity cannot explain SpO2.",
+      "records": 6
+    },
+    {
+      "tag": "hypoglycemia_event",
+      "id": "A01",
+      "days": [
+        22
+      ],
+      "from": "15:00",
+      "to": "15:55",
+      "expected": "WATCH then ATTENTION then NORMAL",
+      "note": "Glucose falls to 51-52 mg/dL and recovers (WATCH 54-69, ATTENTION <54).",
+      "records": 12
+    },
+    {
+      "tag": "sbp_low_inflight_watch",
+      "id": "A01",
+      "days": [
+        25
+      ],
+      "from": "16:00",
+      "to": "16:40",
+      "expected": "WATCH",
+      "note": "SBP 95-99 in flight.",
+      "records": 9
+    },
+    {
+      "tag": "sbp_low_ground_watch",
+      "id": "A02",
+      "days": [
+        5
+      ],
+      "from": "10:30",
+      "to": "11:00",
+      "expected": "WATCH",
+      "note": "SBP 106-109 on the ground. Same values in flight would be NORMAL (tests the ground/in-flight switch).",
+      "records": 7
+    },
+    {
+      "tag": "fasting_glucose_elevated",
+      "id": "A02",
+      "days": [
+        16,
+        17,
+        18
+      ],
+      "from": "04:00",
+      "to": "07:30",
+      "expected": "WATCH",
+      "then": "persistent over 3 mornings",
+      "note": "Fasting glucose 104-110 mg/dL on three consecutive mornings.",
+      "records": 129
+    },
+    {
+      "tag": "spo2_low_attention",
+      "id": "A02",
+      "days": [
+        20
+      ],
+      "from": "10:30",
+      "to": "10:40",
+      "expected": "ATTENTION",
+      "note": "SpO2 90-91 while activity is moderate: acute parameter, flagged immediately, activity does not explain it.",
+      "records": 3
+    },
+    {
+      "tag": "sensor_artifact",
+      "id": "A02",
+      "days": [
+        24
+      ],
+      "from": "13:20",
+      "to": "13:45",
+      "expected": "ARTIFACT (stored, ignored, no alert)",
+      "note": "Physically impossible values.",
+      "records": 6
+    }
+  ],
+  "sensor_dropout": {
+    "id": "A01",
+    "day": 11,
+    "from": "03:10",
+    "to": "03:45",
+    "missing_records": 8
+  },
+  "ultrasound_events": [
+    {
+      "astronaut_id": "A01",
+      "mission_day": 24,
+      "tag": "ijv_grade3_watch",
+      "expected": "WATCH"
+    },
+    {
+      "astronaut_id": "A01",
+      "mission_day": 30,
+      "tag": "ijv_grade3_onsd_rise_watch",
+      "expected": "WATCH"
+    }
+  ]
+}

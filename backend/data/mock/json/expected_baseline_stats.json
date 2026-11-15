@@ -1,0 +1,262 @@
+[
+  {
+    "astronaut_id": "A01",
+    "test_condition": "normal_earth",
+    "n_valid_sessions": 11,
+    "provisional": false,
+    "resp_rate_bpm": {
+      "n": 11,
+      "mean": 15.085,
+      "sd": 0.385
+    },
+    "spo2_pct": {
+      "n": 11,
+      "mean": 97.818,
+      "sd": 0.256
+    },
+    "sbp_mmhg": {
+      "n": 11,
+      "mean": 116.073,
+      "sd": 1.156
+    },
+    "dbp_mmhg": {
+      "n": 11,
+      "mean": 72.382,
+      "sd": 2.066
+    }
+  },
+  {
+    "astronaut_id": "A01",
+    "test_condition": "head_down_tilt",
+    "n_valid_sessions": 12,
+    "provisional": false,
+    "resp_rate_bpm": {
+      "n": 12,
+      "mean": 15.268,
+      "sd": 0.478
+    },
+    "spo2_pct": {
+      "n": 12,
+      "mean": 97.992,
+      "sd": 0.3
+    },
+    "sbp_mmhg": {
+      "n": 12,
+      "mean": 112.033,
+      "sd": 1.485
+    },
+    "dbp_mmhg": {
+      "n": 12,
+      "mean": 69.975,
+      "sd": 1.411
+    }
+  },
+  {
+    "astronaut_id": "A01",
+    "test_condition": "dry_immersion",
+    "n_valid_sessions": 12,
+    "provisional": false,
+    "resp_rate_bpm": {
+      "n": 12,
+      "mean": 14.868,
+      "sd": 0.622
+    },
+    "spo2_pct": {
+      "n": 12,
+      "mean": 98.167,
+      "sd": 0.284
+    },
+    "sbp_mmhg": {
+      "n": 12,
+      "mean": 110.217,
+      "sd": 1.131
+    },
+    "dbp_mmhg": {
+      "n": 12,
+      "mean": 69.083,
+      "sd": 1.309
+    }
+  },
+  {
+    "astronaut_id": "A01",
+    "test_condition": "raised_co2",
+    "n_valid_sessions": 12,
+    "provisional": false,
+    "resp_rate_bpm": {
+      "n": 12,
+      "mean": 17.588,
+      "sd": 0.534
+    },
+    "spo2_pct": {
+      "n": 12,
+      "mean": 98.158,
+      "sd": 0.284
+    },
+    "sbp_mmhg": {
+      "n": 12,
+      "mean": 118.333,
+      "sd": 2.403
+    },
+    "dbp_mmhg": {
+      "n": 12,
+      "mean": 73.275,
+      "sd": 1.549
+    }
+  },
+  {
+    "astronaut_id": "A01",
+    "test_condition": "reduced_pressure",
+    "n_valid_sessions": 12,
+    "provisional": false,
+    "resp_rate_bpm": {
+      "n": 12,
+      "mean": 16.995,
+      "sd": 0.438
+    },
+    "spo2_pct": {
+      "n": 12,
+      "mean": 94.225,
+      "sd": 0.878
+    },
+    "sbp_mmhg": {
+      "n": 12,
+      "mean": 118.642,
+      "sd": 2.068
+    },
+    "dbp_mmhg": {
+      "n": 12,
+      "mean": 73.167,
+      "sd": 1.323
+    }
+  },
+  {
+    "astronaut_id": "A02",
+    "test_condition": "normal_earth",
+    "n_valid_sessions": 12,
+    "provisional": false,
+    "resp_rate_bpm": {
+      "n": 12,
+      "mean": 16.044,
+      "sd": 0.539
+    },
+    "spo2_pct": {
+      "n": 12,
+      "mean": 97.575,
+      "sd": 0.433
+    },
+    "sbp_mmhg": {
+      "n": 12,
+      "mean": 116.358,
+      "sd": 2.091
+    },
+    "dbp_mmhg": {
+      "n": 12,
+      "mean": 74.083,
+      "sd": 1.204
+    }
+  },
+  {
+    "astronaut_id": "A02",
+    "test_condition": "head_down_tilt",
+    "n_valid_sessions": 11,
+    "provisional": false,
+    "resp_rate_bpm": {
+      "n": 11,
+      "mean": 15.954,
+      "sd": 0.503
+    },
+    "spo2_pct": {
+      "n": 11,
+      "mean": 97.718,
+      "sd": 0.389
+    },
+    "sbp_mmhg": {
+      "n": 11,
+      "mean": 113.018,
+      "sd": 2.051
+    },
+    "dbp_mmhg": {
+      "n": 11,
+      "mean": 71.864,
+      "sd": 1.303
+    }
+  },
+  {
+    "astronaut_id": "A02",
+    "test_condition": "dry_immersion",
+    "n_valid_sessions": 12,
+    "provisional": false,
+    "resp_rate_bpm": {
+      "n": 12,
+      "mean": 16.008,
+      "sd": 0.483
+    },
+    "spo2_pct": {
+      "n": 12,
+      "mean": 97.717,
+      "sd": 0.301
+    },
+    "sbp_mmhg": {
+      "n": 12,
+      "mean": 111.392,
+      "sd": 2.545
+    },
+    "dbp_mmhg": {
+      "n": 12,
+      "mean": 71,
+      "sd": 1.25
+    }
+  },
+  {
+    "astronaut_id": "A02",
+    "test_condition": "raised_co2",
+    "n_valid_sessions": 12,
+    "provisional": false,
+    "resp_rate_bpm": {
+      "n": 12,
+      "mean": 18.463,
+      "sd": 0.543
+    },
+    "spo2_pct": {
+      "n": 12,
+      "mean": 97.55,
+      "sd": 0.35
+    },
+    "sbp_mmhg": {
+      "n": 12,
+      "mean": 119.317,
+      "sd": 1.86
+    },
+    "dbp_mmhg": {
+      "n": 12,
+      "mean": 75.367,
+      "sd": 0.974
+    }
+  },
+  {
+    "astronaut_id": "A02",
+    "test_condition": "reduced_pressure",
+    "n_valid_sessions": 5,
+    "provisional": true,
+    "resp_rate_bpm": {
+      "n": 5,
+      "mean": 17.872,
+      "sd": 0.629
+    },
+    "spo2_pct": {
+      "n": 5,
+      "mean": 93.94,
+      "sd": 0.662
+    },
+    "sbp_mmhg": {
+      "n": 5,
+      "mean": 119.28,
+      "sd": 1.859
+    },
+    "dbp_mmhg": {
+      "n": 5,
+      "mean": 75.06,
+      "sd": 2.164
+    }
+  }
+]

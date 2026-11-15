@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/profile/A01"
+  },
+  "status": 200,
+  "response": {
+    "astronautId": "A01",
+    "displayName": "Mariam",
+    "crewNumber": "01",
+    "sex": "M",
+    "mission": {
+      "name": "Artemis"
+    },
+    "identityStatus": {
+      "state": "verified",
+      "description": "Astronaut identity verified via onboard device"
+    },
+    "baselineStatus": {
+      "state": "approved",
+      "label": "Approved baseline"
+    },
+    "deviceStatus": {
+      "state": "disconnected",
+      "label": "Bio-Monitor not connected"
+    },
+    "updatedAt": "2026-11-14T22:07:59.968Z"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/api/readings",
+    "body": {
+      "timestamp_utc": "2026-11-14T22:09:00Z",
+      "astronaut_id": "A02",
+      "session_id": "A02-LIVE",
+      "source": "glucose_sensor",
+      "in_flight": true,
+      "activity_level": "low",
+      "glucose_mgdl": 900
+    }
+  },
+  "status": 201,
+  "response": {
+    "stored": true,
+    "signal_quality": "ARTIFACT",
+    "status": null,
+    "explanation": null
+  }
+}

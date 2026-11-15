@@ -1,0 +1,39 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/connection/A02"
+  },
+  "status": 200,
+  "response": {
+    "astronautId": "A02",
+    "steps": [
+      {
+        "step": 1,
+        "key": "verify_identity",
+        "label": "Verify identity",
+        "status": "verified",
+        "note": "Prototype: the onboard device performs the biometric check; the backend has no authentication yet."
+      },
+      {
+        "step": 2,
+        "key": "retrieve_baseline",
+        "label": "Retrieve approved baseline",
+        "status": "verified"
+      },
+      {
+        "step": 3,
+        "key": "connect_bio_monitor",
+        "label": "Connect Bio-Monitor",
+        "status": "connected",
+        "sessionId": "A02-LIVE",
+        "lastReadingAt": "2026-11-14T22:10:00.000Z"
+      },
+      {
+        "step": 4,
+        "key": "start_monitoring",
+        "label": "Start monitoring",
+        "status": "ready"
+      }
+    ]
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/baseline/A02"
+  },
+  "status": 200,
+  "response": {
+    "approvalStatus": {
+      "label": "Approved pre-flight baseline"
+    },
+    "methodDescription": "Proposed 7–14 pre-flight days · repeated standardized resting sessions · mean and sample SD per test condition, never pooled · fewer than 6 valid sessions is provisional · separate from in-flight trends",
+    "parameters": {
+      "heartRate": {
+        "status": "unavailable"
+      },
+      "skinTemperature": {
+        "status": "unavailable"
+      },
+      "respiratoryRate": {
+        "status": "approved",
+        "mean": 16.04,
+        "standardDeviation": 0.54,
+        "n": 12,
+        "referenceLabel": "Verified pre-flight reference"
+      },
+      "oxygenSaturation": {
+        "status": "approved",
+        "mean": 97.57,
+        "standardDeviation": 0.43,
+        "n": 12,
+        "referenceLabel": "Verified pre-flight reference"
+      },
+      "bloodPressure": {
+        "status": "approved",
+        "mean": {
+          "systolicMmHg": 116.36,
+          "diastolicMmHg": 74.08
+        },
+        "standardDeviation": {
+          "systolicMmHg": 2.09,
+          "diastolicMmHg": 1.2
+        },
+        "n": 12,
+        "referenceLabel": "Verified pre-flight reference"
+      }
+    },
+    "byCondition": [
+      {
+        "condition": "normal_earth",
+        "respiratoryRate": {
+          "status": "approved",
+          "mean": 16.04,
+          "standardDeviation": 0.54,
+          "n": 12,
+          "referenceLabel": "Verified pre-flight reference"
+        },
+        "oxygenSaturation": {
+          "status": "approved",
+          "mean": 97.57,
+          "standardDeviation": 0.43,
+          "n": 12,
+          "referenceLabel": "Verified pre-flight reference"
+        },
+        "bloodPressure": {
+          "status": "approved",
+          "mean": {
+            "systolicMmHg": 116.36,
+            "diastolicMmHg": 74.08
+          },
+          "standardDeviation": {
+            "systolicMmHg": 2.09,
+            "diastolicMmHg": 1.2
+          },
+          "n": 12,
+          "referenceLabel": "Verified pre-flight reference"
+        }
+      },
+      {
+        "condition": "head_down_tilt",
+        "respiratoryRate": {
+          "status": "approved",
+          "mean": 15.95,
+          "standardDeviation": 0.5,
+          "n": 11,
+          "referenceLabel": "Verified pre-flight reference"
+        },
+        "oxygenSaturation": {
+          "status": "approved",
+          "mean": 97.72,
+          "standardDeviation": 0.39,
+          "n": 11,
+          "referenceLabel": "Verified pre-flight reference"
+        },
+        "bloodPressure": {
+          "status": "approved",
+          "mean": {
+            "systolicMmHg": 113.02,
+            "diastolicMmHg": 71.86
+          },
+          "standardDeviation": {
+            "systolicMmHg": 2.05,
+            "diastolicMmHg": 1.3
+          },
+          "n": 11,
+          "referenceLabel": "Verified pre-flight reference"
+        }
+      },
+      {
+        "condition": "dry_immersion",
+        "respiratoryRate": {
+          "status": "approved",
+          "mean": 16.01,
+          "standardDeviation": 0.48,
+          "n": 12,
+          "referenceLabel": "Verified pre-flight reference"
+        },
+        "oxygenSaturation": {
+          "status": "approved",
+          "mean": 97.72,
+          "standardDeviation": 0.3,
+          "n": 12,
+          "referenceLabel": "Verified pre-flight reference"
+        },
+        "bloodPressure": {
+          "status": "approved",
+          "mean": {
+            "systolicMmHg": 111.39,
+            "diastolicMmHg": 71
+          },
+          "standardDeviation": {
+            "systolicMmHg": 2.55,
+            "diastolicMmHg": 1.25
+          },
+          "n": 12,
+          "referenceLabel": "Verified pre-flight reference"
+        }
+      },
+      {
+        "condition": "raised_co2",
+        "respiratoryRate": {
+          "status": "approved",
+          "mean": 18.46,
+          "standardDeviation": 0.54,
+          "n": 12,
+          "referenceLabel": "Verified pre-flight reference"
+        },
+        "oxygenSaturation": {
+          "status": "approved",
+          "mean": 97.55,
+          "standardDeviation": 0.35,
+          "n": 12,
+          "referenceLabel": "Verified pre-flight reference"
+        },
+        "bloodPressure": {
+          "status": "approved",
+          "mean": {
+            "systolicMmHg": 119.32,
+            "diastolicMmHg": 75.37
+          },
+          "standardDeviation": {
+            "systolicMmHg": 1.86,
+            "diastolicMmHg": 0.97
+          },
+          "n": 12,
+          "referenceLabel": "Verified pre-flight reference"
+        }
+      },
+      {
+        "condition": "reduced_pressure",
+        "respiratoryRate": {
+          "status": "provisional",
+          "mean": 17.87,
+          "standardDeviation": 0.63,
+          "n": 5,
+          "referenceLabel": "Provisional: only 5 valid sessions"
+        },
+        "oxygenSaturation": {
+          "status": "provisional",
+          "mean": 93.94,
+          "standardDeviation": 0.66,
+          "n": 5,
+          "referenceLabel": "Provisional: only 5 valid sessions"
+        },
+        "bloodPressure": {
+          "status": "provisional",
+          "mean": {
+            "systolicMmHg": 119.28,
+            "diastolicMmHg": 75.06
+          },
+          "standardDeviation": {
+            "systolicMmHg": 1.86,
+            "diastolicMmHg": 2.16
+          },
+          "n": 5,
+          "referenceLabel": "Provisional: only 5 valid sessions"
+        }
+      }
+    ]
+  }
+}

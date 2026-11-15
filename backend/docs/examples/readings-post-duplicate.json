@@ -1,0 +1,20 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/api/readings",
+    "body": {
+      "timestamp_utc": "2026-11-14T22:09:00Z",
+      "astronaut_id": "A02",
+      "session_id": "A02-LIVE",
+      "source": "bio_monitor",
+      "in_flight": true,
+      "activity_level": "low",
+      "resp_rate_bpm": 15.4
+    }
+  },
+  "status": 200,
+  "response": {
+    "stored": false,
+    "duplicate": true
+  }
+}

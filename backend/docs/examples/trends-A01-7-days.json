@@ -1,0 +1,354 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/trends/A01?period=7"
+  },
+  "status": 200,
+  "response": {
+    "period": 7,
+    "asOf": "2026-11-06",
+    "metrics": {
+      "heartRate": {
+        "status": "unavailable"
+      },
+      "skinTemperature": {
+        "status": "unavailable"
+      },
+      "respiratoryRate": {
+        "status": "available",
+        "unit": "breaths/min",
+        "min": 8,
+        "max": 22,
+        "days": [
+          {
+            "date": "2026-10-31",
+            "missionDay": 24,
+            "value": 15.4,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-01",
+            "missionDay": 25,
+            "value": 15.4,
+            "samples": 287
+          },
+          {
+            "date": "2026-11-02",
+            "missionDay": 26,
+            "value": 15.4,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-03",
+            "missionDay": 27,
+            "value": 15.4,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-04",
+            "missionDay": 28,
+            "value": 15.5,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-05",
+            "missionDay": 29,
+            "value": 15.5,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-06",
+            "missionDay": 30,
+            "value": 15.4,
+            "samples": 287
+          }
+        ]
+      },
+      "oxygenSaturation": {
+        "status": "available",
+        "unit": "%",
+        "min": 90,
+        "max": 100,
+        "days": [
+          {
+            "date": "2026-10-31",
+            "missionDay": 24,
+            "value": 97.8,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-01",
+            "missionDay": 25,
+            "value": 97.8,
+            "samples": 287
+          },
+          {
+            "date": "2026-11-02",
+            "missionDay": 26,
+            "value": 98,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-03",
+            "missionDay": 27,
+            "value": 97.8,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-04",
+            "missionDay": 28,
+            "value": 97.9,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-05",
+            "missionDay": 29,
+            "value": 97.8,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-06",
+            "missionDay": 30,
+            "value": 97.9,
+            "samples": 287
+          }
+        ]
+      },
+      "bloodGlucose": {
+        "status": "available",
+        "unit": "mg/dL",
+        "min": 60,
+        "max": 160,
+        "days": [
+          {
+            "date": "2026-10-31",
+            "missionDay": 24,
+            "value": 96.1,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-01",
+            "missionDay": 25,
+            "value": 96,
+            "samples": 287
+          },
+          {
+            "date": "2026-11-02",
+            "missionDay": 26,
+            "value": 95.9,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-03",
+            "missionDay": 27,
+            "value": 96.1,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-04",
+            "missionDay": 28,
+            "value": 95.8,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-05",
+            "missionDay": 29,
+            "value": 95.9,
+            "samples": 288
+          },
+          {
+            "date": "2026-11-06",
+            "missionDay": 30,
+            "value": 96,
+            "samples": 287
+          }
+        ]
+      },
+      "bloodPressure": {
+        "status": "available",
+        "unit": "mmHg",
+        "min": 80,
+        "max": 150,
+        "days": [
+          {
+            "date": "2026-10-31",
+            "missionDay": 24,
+            "systolic": 106.2,
+            "diastolic": 66.8,
+            "status": "NORMAL"
+          },
+          {
+            "date": "2026-11-01",
+            "missionDay": 25,
+            "systolic": 106.1,
+            "diastolic": 66.8,
+            "status": "NORMAL"
+          },
+          {
+            "date": "2026-11-02",
+            "missionDay": 26,
+            "systolic": 106.1,
+            "diastolic": 66.9,
+            "status": "NORMAL"
+          },
+          {
+            "date": "2026-11-03",
+            "missionDay": 27,
+            "systolic": 106.2,
+            "diastolic": 66.9,
+            "status": "NORMAL"
+          },
+          {
+            "date": "2026-11-04",
+            "missionDay": 28,
+            "systolic": 106.2,
+            "diastolic": 66.9,
+            "status": "NORMAL"
+          },
+          {
+            "date": "2026-11-05",
+            "missionDay": 29,
+            "systolic": 106.3,
+            "diastolic": 67,
+            "status": "NORMAL"
+          },
+          {
+            "date": "2026-11-06",
+            "missionDay": 30,
+            "systolic": 106.2,
+            "diastolic": 66.7,
+            "status": "NORMAL"
+          }
+        ]
+      }
+    },
+    "ultrasound": [
+      {
+        "timestampUtc": "2026-09-06T14:00:00.000Z",
+        "missionDay": null,
+        "inFlight": false,
+        "status": "NORMAL",
+        "ijvAreaMm2": 9.2,
+        "ijvFlowGrade": 1,
+        "onsdMm": 5.2,
+        "onsdBaselineMm": 5.2,
+        "cimtMm": 0.54,
+        "lvefPct": 61,
+        "muscleThicknessMm": 21.8,
+        "muscleLossPct": 0
+      },
+      {
+        "timestampUtc": "2026-09-20T14:00:00.000Z",
+        "missionDay": null,
+        "inFlight": false,
+        "status": "NORMAL",
+        "ijvAreaMm2": 10.1,
+        "ijvFlowGrade": 1,
+        "onsdMm": 5.25,
+        "onsdBaselineMm": 5.2,
+        "cimtMm": 0.55,
+        "lvefPct": 62,
+        "muscleThicknessMm": 22.1,
+        "muscleLossPct": -0.68
+      },
+      {
+        "timestampUtc": "2026-10-04T14:00:00.000Z",
+        "missionDay": null,
+        "inFlight": false,
+        "status": "NORMAL",
+        "ijvAreaMm2": 9.6,
+        "ijvFlowGrade": 1,
+        "onsdMm": 5.15,
+        "onsdBaselineMm": 5.2,
+        "cimtMm": 0.53,
+        "lvefPct": 60,
+        "muscleThicknessMm": 22,
+        "muscleLossPct": -0.15
+      },
+      {
+        "timestampUtc": "2026-10-17T14:00:00.000Z",
+        "missionDay": 10,
+        "inFlight": true,
+        "status": "NORMAL",
+        "ijvAreaMm2": 58,
+        "ijvFlowGrade": 1,
+        "onsdMm": 5.45,
+        "onsdBaselineMm": 5.2,
+        "cimtMm": 0.55,
+        "lvefPct": 61,
+        "muscleThicknessMm": 21.91,
+        "muscleLossPct": 0.26
+      },
+      {
+        "timestampUtc": "2026-10-21T14:00:00.000Z",
+        "missionDay": 14,
+        "inFlight": true,
+        "status": "NORMAL",
+        "ijvAreaMm2": 66,
+        "ijvFlowGrade": 2,
+        "onsdMm": 5.6,
+        "onsdBaselineMm": 5.2,
+        "cimtMm": 0.56,
+        "lvefPct": 60,
+        "muscleThicknessMm": 21.77,
+        "muscleLossPct": 0.9
+      },
+      {
+        "timestampUtc": "2026-10-25T14:00:00.000Z",
+        "missionDay": 18,
+        "inFlight": true,
+        "status": "NORMAL",
+        "ijvAreaMm2": 71,
+        "ijvFlowGrade": 2,
+        "onsdMm": 5.72,
+        "onsdBaselineMm": 5.2,
+        "cimtMm": 0.56,
+        "lvefPct": 62,
+        "muscleThicknessMm": 21.63,
+        "muscleLossPct": 1.53
+      },
+      {
+        "timestampUtc": "2026-10-28T14:00:00.000Z",
+        "missionDay": 21,
+        "inFlight": true,
+        "status": "NORMAL",
+        "ijvAreaMm2": 69,
+        "ijvFlowGrade": 2,
+        "onsdMm": 5.85,
+        "onsdBaselineMm": 5.2,
+        "cimtMm": 0.57,
+        "lvefPct": 60,
+        "muscleThicknessMm": 21.61,
+        "muscleLossPct": 1.62
+      },
+      {
+        "timestampUtc": "2026-10-31T14:00:00.000Z",
+        "missionDay": 24,
+        "inFlight": true,
+        "status": "WATCH",
+        "ijvAreaMm2": 77,
+        "ijvFlowGrade": 3,
+        "onsdMm": 6.05,
+        "onsdBaselineMm": 5.2,
+        "cimtMm": 0.58,
+        "lvefPct": 61,
+        "muscleThicknessMm": 21.51,
+        "muscleLossPct": 2.08
+      },
+      {
+        "timestampUtc": "2026-11-06T14:00:00.000Z",
+        "missionDay": 30,
+        "inFlight": true,
+        "status": "WATCH",
+        "ijvAreaMm2": 80,
+        "ijvFlowGrade": 3,
+        "onsdMm": 6.95,
+        "onsdBaselineMm": 5.2,
+        "cimtMm": 0.58,
+        "lvefPct": 60,
+        "muscleThicknessMm": 21.32,
+        "muscleLossPct": 2.94
+      }
+    ]
+  }
+}

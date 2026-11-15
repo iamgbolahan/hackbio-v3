@@ -1,0 +1,25 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/astronauts"
+  },
+  "status": 200,
+  "response": [
+    {
+      "astronautId": "A01",
+      "displayName": "Mariam",
+      "crewNumber": "01",
+      "sex": "M",
+      "launchDay": 8,
+      "missionName": "Artemis"
+    },
+    {
+      "astronautId": "A02",
+      "displayName": "Crew Member 02",
+      "crewNumber": "02",
+      "sex": "F",
+      "launchDay": 8,
+      "missionName": "Artemis"
+    }
+  ]
+}

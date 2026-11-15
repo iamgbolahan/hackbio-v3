@@ -1,0 +1,12 @@
+[
+  {
+    "astronaut_id": "A01",
+    "sex": "M",
+    "launch_day": 8
+  },
+  {
+    "astronaut_id": "A02",
+    "sex": "F",
+    "launch_day": 8
+  }
+]

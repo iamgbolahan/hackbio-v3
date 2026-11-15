@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/api/ultrasound",
+    "body": {
+      "timestamp_utc": "2026-11-13T15:00:00Z",
+      "astronaut_id": "A01",
+      "source": "manual_entry",
+      "in_flight": true,
+      "condition": "spaceflight",
+      "ijv_flow_grade": 5,
+      "lvef_pct": 120
+    }
+  },
+  "status": 400,
+  "response": {
+    "error": "validation_failed",
+    "details": [
+      {
+        "field": "ijv_flow_grade",
+        "message": "Number must be less than or equal to 4"
+      },
+      {
+        "field": "lvef_pct",
+        "message": "Number must be less than or equal to 95"
+      }
+    ]
+  }
+}

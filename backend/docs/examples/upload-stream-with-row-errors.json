@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/api/upload?type=stream",
+    "headers": {
+      "content-type": "text/csv"
+    },
+    "body": "timestamp_utc,astronaut_id,session_id,source,in_flight,activity_level,resp_rate_bpm,spo2_pct,sbp_mmhg,dbp_mmhg\n2026-11-13T00:00:00Z,A01,A01-D37,mock,true,low,15,98,107,66\n2026-11-13T00:05:00Z,A01,A01-D37,mock,true,jogging,15,98,107,66\n2026-11-13T00:10:00Z,A99,A99-D37,mock,true,low,15,98,107,66\n2026-11-13T00:15:00Z,A01,A01-D37,mock,true,low,15.2,97,108,67"
+  },
+  "status": 200,
+  "response": {
+    "type": "stream",
+    "rows": 4,
+    "stored": 2,
+    "duplicates": 0,
+    "artifacts": 0,
+    "errors": 2,
+    "error_rows": [
+      {
+        "line": 3,
+        "message": "activity_level: Invalid enum value. Expected 'low' | 'moderate' | 'high', received 'jogging'"
+      },
+      {
+        "line": 4,
+        "message": "astronaut_id: no astronaut with id A99 (upload profiles first)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/api/readings",
+    "body": {
+      "timestamp_utc": "2026-11-14T22:09:00Z",
+      "astronaut_id": "A02",
+      "session_id": "A02-LIVE",
+      "source": "bio_monitor",
+      "in_flight": true,
+      "activity_level": "low",
+      "resp_rate_bpm": 15.4,
+      "spo2_pct": 98,
+      "sbp_mmhg": 108,
+      "dbp_mmhg": 67,
+      "glucose_mgdl": 92,
+      "fasting": false,
+      "signal_quality": "OK",
+      "mission_day": 38
+    }
+  },
+  "status": 201,
+  "response": {
+    "stored": true,
+    "signal_quality": "OK",
+    "status": "NORMAL",
+    "explanation": "Measurements remain close to your baseline."
+  }
+}

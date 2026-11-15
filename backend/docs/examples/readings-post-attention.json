@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/api/readings",
+    "body": {
+      "timestamp_utc": "2026-11-14T22:10:00Z",
+      "astronaut_id": "A02",
+      "session_id": "A02-LIVE",
+      "source": "bio_monitor",
+      "in_flight": true,
+      "activity_level": "moderate",
+      "resp_rate_bpm": 16,
+      "spo2_pct": 90,
+      "sbp_mmhg": 108,
+      "dbp_mmhg": 68,
+      "mission_day": 38
+    }
+  },
+  "status": 201,
+  "response": {
+    "stored": true,
+    "signal_quality": "OK",
+    "status": "ATTENTION",
+    "explanation": "SpO₂ 90% is in the ATTENTION range."
+  }
+}

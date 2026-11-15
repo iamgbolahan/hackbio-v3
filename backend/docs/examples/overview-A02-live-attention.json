@@ -1,0 +1,65 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/overview/A02"
+  },
+  "status": 200,
+  "response": {
+    "astronautId": "A02",
+    "asOf": "2026-11-14T22:10:00.000Z",
+    "missionDay": 38,
+    "inFlight": true,
+    "bioMonitorConnected": true,
+    "status": {
+      "level": "ATTENTION",
+      "headline": "A value needs attention now",
+      "activityLevel": "moderate",
+      "reasons": ["SpO₂ 90% is in the ATTENTION range."]
+    },
+    "sessionContext": {
+      "sessionId": "A02-LIVE",
+      "baselineVerified": true,
+      "wearerAssociationConfirmed": true,
+      "signalQuality": "OK"
+    },
+    "readings": {
+      "respiratoryRate": {
+        "value": 16,
+        "unit": "breaths/min",
+        "baseline": 16,
+        "deviationPct": null,
+        "status": "NORMAL"
+      },
+      "oxygenSaturation": {
+        "value": 90,
+        "unit": "%",
+        "baseline": 97.7,
+        "deviationPct": null,
+        "status": "ATTENTION"
+      },
+      "bloodPressure": {
+        "systolic": 108,
+        "diastolic": 68,
+        "unit": "mmHg",
+        "baseline": {
+          "systolic": 113,
+          "diastolic": 71.9
+        },
+        "status": "NORMAL"
+      },
+      "bloodGlucose": {
+        "value": 92,
+        "unit": "mg/dL",
+        "fasting": null,
+        "baseline": null,
+        "status": "NORMAL"
+      },
+      "heartRate": {
+        "status": "unavailable"
+      },
+      "skinTemperature": {
+        "status": "unavailable"
+      }
+    }
+  }
+}

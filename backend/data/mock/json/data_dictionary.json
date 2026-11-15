@@ -1,0 +1,89 @@
+{
+  "common_record_fields": [
+    "timestamp_utc",
+    "astronaut_id",
+    "session_id",
+    "source",
+    "in_flight",
+    "activity_level",
+    "resp_rate_bpm",
+    "spo2_pct",
+    "sbp_mmhg",
+    "dbp_mmhg",
+    "glucose_mgdl",
+    "fasting",
+    "signal_quality",
+    "mission_day",
+    "scenario_tag"
+  ],
+  "baseline_session_fields": [
+    "astronaut_id",
+    "session_id",
+    "session_start_utc",
+    "test_condition",
+    "context",
+    "duration_min",
+    "resp_rate_bpm",
+    "spo2_pct",
+    "sbp_mmhg",
+    "dbp_mmhg",
+    "n_bp_readings",
+    "valid",
+    "invalid_reason"
+  ],
+  "ultrasound_fields": [
+    "timestamp_utc",
+    "astronaut_id",
+    "source",
+    "in_flight",
+    "condition",
+    "mission_day",
+    "ijv_area_mm2",
+    "ijv_flow_grade",
+    "onsd_mm",
+    "cimt_mm",
+    "lvef_pct",
+    "muscle_thickness_mm",
+    "scenario_tag"
+  ],
+  "profile_fields": [
+    "astronaut_id",
+    "sex",
+    "launch_day"
+  ],
+  "types": {
+    "stream": {
+      "in_flight": "boolean",
+      "fasting": "boolean",
+      "resp_rate_bpm": "number",
+      "spo2_pct": "number",
+      "sbp_mmhg": "number",
+      "dbp_mmhg": "number",
+      "glucose_mgdl": "number",
+      "mission_day": "number"
+    },
+    "baseline": {
+      "duration_min": "number",
+      "resp_rate_bpm": "number",
+      "spo2_pct": "number",
+      "sbp_mmhg": "number",
+      "dbp_mmhg": "number",
+      "n_bp_readings": "number",
+      "valid": "boolean"
+    },
+    "ultrasound": {
+      "in_flight": "boolean",
+      "mission_day": "number",
+      "ijv_area_mm2": "number",
+      "ijv_flow_grade": "number",
+      "onsd_mm": "number",
+      "cimt_mm": "number",
+      "lvef_pct": "number",
+      "muscle_thickness_mm": "number"
+    },
+    "profiles": {
+      "launch_day": "number"
+    }
+  },
+  "labelling": "Every value in these files is SYNTHETIC. source is always \"mock\"."
+}
