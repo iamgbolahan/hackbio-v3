@@ -2,6 +2,7 @@ import { resolve } from "node:path";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
+import { backfillMissingHistory, bootstrap } from "./bootstrap";
 import { env } from "./config/env";
 import { errorHandler, notFoundRoute } from "./middleware/error-handler";
 import { astronautsRouter } from "./modules/astronauts/controllers/astronauts.controller";
@@ -39,6 +40,22 @@ export function createApp(services: Services = createServices()): express.Expres
   app.get("/health", (_req, res) => {
     res.json({ ok: true });
   });
+
+  // Hosts with no shell: the first request to the API prepares the database (tables, demo accounts, past days).
+  // Every step skips what already exists, so repeating it is harmless. Turn AUTO_SETUP off afterwards.
+  if (env.AUTO_SETUP) {
+    let ready: Promise<void> | null = null;
+    app.use("/api", async (_req, _res, next) => {
+      ready ??= bootstrap().then(() => backfillMissingHistory(services));
+      try {
+        await ready;
+        next();
+      } catch (error) {
+        ready = null;
+        next(error);
+      }
+    });
+  }
 
   app.use("/api", setupRouter(services));
 

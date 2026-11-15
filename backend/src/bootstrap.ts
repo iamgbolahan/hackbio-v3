@@ -61,12 +61,3 @@ export async function backfillMissingHistory(services: Services): Promise<void> 
     console.log(`bootstrap: history for ${id}: ${result.stored} readings in ${Date.now() - started} ms`);
   }
 }
-
-if (require.main === module) {
-  bootstrap()
-    .then(() => prisma.$disconnect())
-    .catch((error: unknown) => {
-      console.error("bootstrap failed", error);
-      process.exit(1);
-    });
-}

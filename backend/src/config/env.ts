@@ -61,6 +61,8 @@ const envSchema = z.object({
   SIM_LAZY: flag(false),
   // On first start, fill the mission days that have already passed (hosts with no shell, e.g. Render).
   BACKFILL_ON_START: flag(false),
+  // Serverless hosts with no shell: run migrate + seed + history once on the first request, then switch this off.
+  AUTO_SETUP: flag(false),
   SIM_MAX_BACKFILL_HOURS: z.coerce.number().positive().default(336),
   // Enables the one-time /api/setup/* endpoints (migrate, seed, history). Leave unset to switch them off.
   SETUP_TOKEN: z.string().min(16).optional(),
