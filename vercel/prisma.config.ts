@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { defineConfig, env } from "prisma/config";
+import { defineConfig } from "prisma/config";
 
 if (existsSync(".env")) process.loadEnvFile(".env");
 
@@ -9,6 +9,7 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: env("DATABASE_URL"),
+    // `prisma generate` needs no database, so a placeholder lets it run at build time before DATABASE_URL exists.
+    url: process.env.DATABASE_URL ?? "postgresql://build:build@localhost:5432/build",
   },
 });

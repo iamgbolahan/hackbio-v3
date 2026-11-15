@@ -1,5 +1,5 @@
 {
-  "functions": { "api/index.js": { "maxDuration": 300, "includeFiles": "parts/**" } },
+  "functions": { "api/index.js": { "maxDuration": 300 } },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index" },
     { "source": "/health", "destination": "/api/index" },
